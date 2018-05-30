@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <title>首页</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.2.6/css/swiper.min.css">
+    <link rel="stylesheet" href="css/public.css">
+    <script src="js/rem.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.2.6/js/swiper.min.js"></script>
+</head>
+<body>
+<audio src="music/music01.mp3" hidden="hidden" preload loop="loop" autoplay="autoplay" id="bg"></audio>
+<img src="img/music.png" id="music" />
+<div id="app">
+    <div v-if="tast">hellow world</div>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <img src="img/banner01.png" alt="" style="width: 100%">
+            </div>
+            <div class="swiper-slide">
+                <img src="img/banner01.png" alt="" style="width: 100%">
+            </div>
+            <div class="swiper-slide">
+                <img src="img/banner01.png" alt="" style="width: 100%">
+            </div>
+            <div class="swiper-slide">
+                <img src="img/banner01.png" alt="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/public.js"></script>
+<script>
+    var App = new Vue({
+        el:'#app',
+        data:{
+            tast:true
+        },
+        mounted:function () {
+            console.log($('#app'))
+            var swiper1 = new Swiper('.swiper-container',{
+
+            })
+        }
+    })
+</script>
+</body>
+</html>
