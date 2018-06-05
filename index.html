@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.2.6/css/swiper.min.css">
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/public.css">
+    <link rel="stylesheet" href="css/index.css?v=1">
     <script src="js/rem.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
@@ -18,38 +19,148 @@
 </head>
 <body>
 <audio src="music/music01.mp3" hidden="hidden" preload loop="loop"  id="bg"></audio>
-<img src="img/music.png" id="music" />
+<!--<img src="img/music.png" id="music" />-->
 <div id="app">
-    <div v-show="tast" class="animated bounceIn">hellow world</div>
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide" @click="tast = true">
-                <img src="img/banner01.png" alt="" style="width: 100%">
+    <div id="loading" v-if="status == 0">
+        <div>
+            <div class="logo">
+                <img src="img/logo01.png" alt="" class="animated bounceIn">
             </div>
-            <div class="swiper-slide">
-                <img src="img/banner01.png" alt="" style="width: 100%">
+            <div class="list2">
+                <div>
+                    <div class="line01"></div>
+                    <div class="circle01">
+                        <div v-for="(item,index) in 14" :key="index" :class="{circle_sel:index<classNum01}"></div>
+                    </div>
+                </div>
             </div>
-            <div class="swiper-slide">
-                <img src="img/banner01.png" alt="" style="width: 100%">
-            </div>
-            <div class="swiper-slide">
-                <img src="img/banner01.png" alt="" style="width: 100%">
+            <div class="list3">
+                <input type="text" v-model="num01" disabled>
             </div>
         </div>
     </div>
+    <!--首页-->
+    <div id="index" v-if="status == 1 && shop_type == 0">
+        <div class="list1">
+            <div class="logo01">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="logo02">
+                <img src="img/logo02.png" alt="">
+            </div>
+        </div>
+        <div class="list2" style="">
+            <div>
+                <div class="balloon01 ani03">
+                    <img src="img/balloon01.png" alt="" class="ani02">
+                </div>
+                <div class="balloon01 ani03" style="left: 8%;top: 60%;">
+                    <img src="img/balloon01.png" alt="" class="ani02">
+                </div>
+                <div class="balloon01 ani03" style="left: 70%;top: 5%;">
+                    <img src="img/balloon01.png" alt="" class="ani02">
+                </div>
+                <div class="balloon02 ani03_1">
+                    <img src="img/balloon02.png" alt="" class="ani02">
+                </div>
+                <div class="balloon02 ani03_1" style="left: 10%; top: 30%;">
+                    <img src="img/balloon02.png" alt="" class="ani02">
+                </div>
+                <div class="gift02 ani02">
+                    <img src="img/gift02.png" alt="">
+                </div>
+                <div class="product01 ani01">
+                    <img src="img/product01.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="list3">
+            <div>
+                <div v-for="(item,index) in btns" :key="index" class="animated" :class="item.class">
+                    <img :src="item.img" alt="" class="img" @click="btn(index)">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--内页-->
+    <!--至尊购-->
+    <div id="index_1" v-if="status == 1 && shop_type == 1">
+        index1
+        <!--内页模块-->
+        <div v-if="subPage == 0" style="width: 1rem;height: 1rem;background: red"></div>
+    </div>
+    <!--超值购-->
+    <div id="index_2" v-if="status == 1 && shop_type == 2">
+        <div v-if="subPage == 0" style="width: 1rem;height: 1rem;background: red"></div>
+        index2
+    </div>
+    <!--换新购-->
+    <div id="index_3" v-if="status == 1 && shop_type == 3">
+        index3
+    </div>
+    <!--免费购-->
+    <div id="index_4" v-if="status == 1 && shop_type == 4">
+        index4
+    </div>
+    <!--活动规则-->
+    <div id="index_5" v-if="status == 1 && shop_type == 5">
+        index5
+    </div>
 </div>
 <script src="js/public.js"></script>
+<script src="js/loding.js"></script>
 <script>
     var App = new Vue({
         el:'#app',
         data:{
-            tast:false
+            //状态控制
+            status:0, //页面状态：0-加载页面、1-首页
+            shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
+            subPage:0,//内页流程步骤控制：
+            aa:true,
+            //加载页参数：
+            num01:'0%',
+            classNum01:0,
+            //首页参数
+            btns:[
+                {class:'button01 rotateInDownLeft',img:'img/button01.png'},
+                {class:'button02 rotateInDownRight',img:'img/button02.png'},
+                {class:'button03 rotateInUpLeft',img:'img/button03.png'},
+                {class:'button04 rotateInUpRight',img:'img/button04.png'},
+                {class:'button05 bounceIn',img:'img/button05.png'}
+            ]
+        },
+        methods:{
+           // 首页方法：
+           btn(index){
+              if(index == 0){
+                  this.shop_type = 1
+              }else if(index == 1){
+                  this.shop_type = 2
+              }else if(index == 2){
+                  this.shop_type = 3
+              }else if(index == 3){
+                  this.shop_type = 4
+              }else{
+                  this.shop_type = 5
+              }
+           }
+        },
+        updated(){
+            $('.img').click(function () {
+                return false
+            })
         },
         mounted:function () {
-            console.log($('#app'))
+            const that = this;
+            console.log(imgList);
             var swiper1 = new Swiper('.swiper-container',{
 
-            })
+            });
+            //加载完后进入首页
+            setTimeout(function () {
+                load(imgList,that)
+            },100)
         }
     })
 </script>
