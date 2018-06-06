@@ -8,6 +8,7 @@
     <meta content="telephone=no" name="format-detection"/>
     <title>首页</title>
     <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/ydui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.2.6/css/swiper.min.css">
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/public.css">
@@ -54,19 +55,13 @@
                 <div class="balloon01 ani03">
                     <img src="img/balloon01.png" alt="" class="ani02">
                 </div>
-                <div class="balloon01 ani03" style="left: 8%;top: 60%;">
-                    <img src="img/balloon01.png" alt="" class="ani02">
-                </div>
-                <div class="balloon01 ani03" style="left: 70%;top: 5%;">
+                <div class="balloon01 ani03 delay_3" style="left: 50%;">
                     <img src="img/balloon01.png" alt="" class="ani02">
                 </div>
                 <div class="balloon02 ani03_1">
                     <img src="img/balloon02.png" alt="" class="ani02">
                 </div>
-                <div class="balloon02 ani03_1" style="left: 10%; top: 30%;">
-                    <img src="img/balloon02.png" alt="" class="ani02">
-                </div>
-                <div class="gift02 ani02">
+                <div class="gift02">
                     <img src="img/gift02.png" alt="">
                 </div>
                 <div class="product01 ani01">
@@ -91,8 +86,167 @@
     </div>
     <!--超值购-->
     <div id="index_2" v-if="status == 1 && shop_type == 2">
-        <div v-if="subPage == 0" style="width: 1rem;height: 1rem;background: red"></div>
-        index2
+        <!--弹窗-->
+        <!--活动规则-->
+        <div class="popUp01" v-if="popUp01 == 1">
+            <div>
+                <div class="wrap">
+                    <img src="img/bj05.png" alt="">
+                    <div class="close">
+                        <img src="img/close01.png" alt="" class="img" @click="close">
+                    </div>
+                    <div class="title01">
+                        <img src="img/popTitle01.png" alt="">
+                    </div>
+                    <div class="cont01">
+                        <img src="img/cont01.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--抢购失败-->
+        <div class="popUp01" v-if="popUp01 == 2">
+            <div>
+                <div class="wrap">
+                    <img src="img/bj05.png" alt="">
+                    <div class="close">
+                        <img src="img/close01.png" alt="" class="img" @click="close">
+                    </div>
+                    <div class="title01">
+                        <img src="img/popTitle02.png" alt="">
+                    </div>
+                    <div class="cont01">
+                        <img src="img/img02.png" alt="" style="width: 80%;margin-bottom: 0.8rem;">
+                        <div class="button08" style="width: 65%;">
+                            <img src="img/button08.png" alt="" class="img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--抢购成功-->
+        <div class="popUp01" v-if="popUp01 == 3">
+            <div>
+                <div class="wrap">
+                    <img src="img/bj05.png" alt="">
+                    <div class="close">
+                        <img src="img/close01.png" alt="" class="img" @click="close">
+                    </div>
+                    <div class="title01">
+                        <img src="img/popTitle03.png" alt="">
+                    </div>
+                    <div class="cont01">
+                        <img src="img/img03.png" alt="" style="width: 50%;margin-bottom: 0.2rem">
+                        <div class="font01">
+                            <div>目前仅剩XXX张超值券！</div>
+                            <div>赶紧抓紧时间抢了！</div>
+                        </div>
+                        <div class="button08" style="width: 65%;">
+                            <img src="img/button09.png" alt="" class="img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--购买协议-->
+        <div class="popUp01" v-if="popUp01 == 4">
+                <div>
+                    <div class="wrap">
+                        <img src="img/bj05.png" alt="">
+                        <div class="close">
+                            <img src="img/close01.png" alt="" class="img" @click="close">
+                        </div>
+                        <div class="title01">
+                            <img src="img/popTitle05.png" alt="">
+                        </div>
+                        <div class="cont01" style="top: 17%;">
+                            <div class="c1">
+                                <p>超值券的使用规则请仔细参照本活动首页<span @click="navTo">“活动规则”</span>，除超值券本身不能正常使用外，一经购买，一律不予退款。（例如超值券逾期未使用、消费者操作流程失误，此类情况属消费者个人失误行为，不予退款）</p>
+                            </div>
+                            <div class="c2" @click="agrees = !agrees">
+                                <div class="select01" :class="{select01_sel:agrees}"></div>
+                                <div class="select01-cont">
+                                    <p>点击确定购买并付款即视为您已同意并了解以上条款，并已清楚了解活动规则。</p>
+                                </div>
+                            </div>
+                            <div class="button08" style="width: 65%;" v-if="agrees">
+                                <img src="img/button10.png" alt="" class="img" @click="btn01">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--页面-->
+        <!--内页首页-->
+        <div class="i-1" v-if="subPage == 0">
+            <div class="return"><img src="img/return.png" alt="" class="img"></div>
+            <div class="list2">
+                <div class="swiper-container swiper01">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="img/product03.png" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="img/product03.png" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="img/product03.png" alt="">
+                        </div>
+                    </div>
+                    <div class="swiper-pagination pagin01"></div>
+                </div>
+            </div>
+            <div class="zhiyin move01"><img src="img/img01.png" alt=""></div>
+            <div class="button07"><img src="img/button07.png" alt="" class="img" @click="i1Btn01"></div>
+        </div>
+        <!--填写信息-->
+        <div class="i-2" v-if="subPage == 1">
+            <div class="return"><img src="img/return.png" alt="" class="img"></div>
+            <div class="logo01">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="messageWrap">
+                <img src="img/bj06.png" alt="">
+                <div>
+                    <div class="mesTitle">
+                        <img src="img/popTitle04.png" alt="">
+                    </div>
+                    <div class="mesList">
+                        <div>
+                            <img src="img/img04.png" alt="">
+                            <div class="list01">
+                                <ul>
+                                    <li>
+                                        <span>姓名：</span><input type="text" placeholder="请输入您的姓名">
+                                    </li>
+                                    <li>
+                                        <span>电话：</span><input type="text" placeholder="请输入11位手机号码">
+                                    </li>
+                                    <li class="city">
+                                        <span>城市：</span><input type="text" id="acity" placeholder="请选择省、市、区">
+                                    </li>
+                                    <li class="address">
+                                        <span>具体地址：</span><textarea placeholder="请输具体的街道地址"></textarea>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button07">
+                        <img src="img/button07_1.png" alt="" class="img">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--抢购成功-->
+        <div class="i-3" v-if="subPage == 2">
+            <div class="img01">
+                <img src="img/img05.png" alt="">
+            </div>
+            <a href="https://haotaitai.hengdikeji.com/htt/map.html" class="button11">
+                <img src="img/button11.png" alt="">
+            </a>
+        </div>
     </div>
     <!--换新购-->
     <div id="index_3" v-if="status == 1 && shop_type == 3">
@@ -109,12 +263,14 @@
 </div>
 <script src="js/public.js"></script>
 <script src="js/loding.js"></script>
+<script src="js/ydui.citys.js"></script>
+<script src="js/ydui.js"></script>
 <script>
     var App = new Vue({
         el:'#app',
         data:{
             //状态控制
-            status:0, //页面状态：0-加载页面、1-首页
+            status:1, //页面状态：0-加载页面、1-首页
             shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
             subPage:0,//内页流程步骤控制：
             aa:true,
@@ -128,7 +284,11 @@
                 {class:'button03 rotateInUpLeft',img:'img/button03.png'},
                 {class:'button04 rotateInUpRight',img:'img/button04.png'},
                 {class:'button05 bounceIn',img:'img/button05.png'}
-            ]
+            ],
+            //超值购弹窗
+            popUp01:0,//0:不显示任何弹窗
+            // 超值购购买协议同意状态
+            agrees:false
         },
         methods:{
            // 首页方法：
@@ -144,11 +304,51 @@
               }else{
                   this.shop_type = 5
               }
-           }
+           },
+            close(){
+               this.popUp01 = 0
+            },
+            i1Btn01(){
+               this.popUp01 = 1
+            },
+            // 超值购弹窗按钮
+            btn01(){
+               if(this.popUp01 == 4){
+                   this.popUp01 = 0
+               }
+            },
+            // 超值购购买协议活动规则跳转
+            navTo(){
+              this.popUp01 = 1
+            }
         },
         updated(){
             $('.img').click(function () {
                 return false
+            });
+                var swiper1 = new Swiper('.swiper01',{
+                    pagination:{
+                        el:'.pagin01',
+                        type:'bullets',
+                    }
+                })
+            //选择省市区
+            !function () {
+                var $target = $('#acity');
+
+                $target.citySelect();
+
+                $target.on('click', function (event) {
+                    event.stopPropagation();
+                    $target.citySelect('open');
+                });
+
+                $target.on('done.ydui.cityselect', function (ret) {
+                    $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+                });
+            }();
+            $('#acity').focusin(function () {
+                $(this).blur();
             })
         },
         mounted:function () {
