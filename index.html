@@ -80,9 +80,14 @@
     <!--内页-->
     <!--至尊购-->
     <div id="index_1" v-if="status == 1 && shop_type == 1">
-        index1
-        <!--内页模块-->
-        <div v-if="subPage == 0" style="width: 1rem;height: 1rem;background: red"></div>
+        <div class="list1" v-if="subPage == 0">
+            <div class="return">
+                <img src="img/return.png" alt="" class="img">
+            </div>
+            <div class="button12">
+                <img src="img/button12.png" alt="" class="img">
+            </div>
+        </div>
     </div>
     <!--超值购-->
     <div id="index_2" v-if="status == 1 && shop_type == 2">
