@@ -80,9 +80,89 @@
     <!--内页-->
     <!--至尊购-->
     <div id="index_1" v-if="status == 1 && shop_type == 1">
-        index1
-        <!--内页模块-->
-        <div v-if="subPage == 0" style="width: 1rem;height: 1rem;background: red"></div>
+        <!--弹窗-->
+        <!--购买协议-->
+        <div class="popUp01" v-if="popUp01 == 1">
+            <div>
+                <div class="wrap">
+                    <div class="wrap-1">
+                        <img src="img/bj12_1.png" alt="">
+                        <div class="close">
+                            <img src="img/close01.png" alt="" class="img" @click="close">
+                        </div>
+                        <div class="title01">
+                            <img src="img/popTitle05.png" alt="">
+                        </div>
+                    </div>
+                    <div class="wrap-2">
+                        <div class="c1">
+                            <img src="img/img06.png" alt="">
+                        </div>
+                        <div class="c2" @click="agrees = !agrees">
+                            <div class="select01" :class="{select01_sel:agrees}"></div>
+                            <div class="select01-cont">
+                                <p>点击确定购买并付款即视为您已同意并了解以上条款，并已清楚了解活动规则。</p>
+                            </div>
+                        </div>
+                        <div class="button08" style="width: 65%;" v-if="agrees">
+                            <img src="img/button10.png" alt="" class="img" @click="btn01">
+                        </div>
+                    </div>
+                    <div class="wrap-3">
+                        <img src="img/bj12-3.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--页面-->
+        <!--内页首页-->
+        <div class="list1" v-if="subPage == 0">
+            <div class="return">
+                <img src="img/return.png" alt="" class="img">
+            </div>
+            <div class="button12">
+                <img src="img/button12.png" alt="" class="img">
+            </div>
+        </div>
+        <!--填写信息-->
+        <div class="i-2" v-if="subPage == 1">
+            <div class="return"><img src="img/return.png" alt="" class="img"></div>
+            <div class="logo01">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="messageWrap">
+                <img src="img/bj06.png" alt="">
+                <div>
+                    <div class="mesTitle">
+                        <img src="img/popTitle04.png" alt="">
+                    </div>
+                    <div class="mesList">
+                        <div>
+                            <img src="img/img04.png" alt="">
+                            <div class="list01">
+                                <ul>
+                                    <li>
+                                        <span>姓名：</span><input type="text" placeholder="请输入您的姓名">
+                                    </li>
+                                    <li>
+                                        <span>电话：</span><input type="text" placeholder="请输入11位手机号码">
+                                    </li>
+                                    <li class="city">
+                                        <span>城市：</span><input type="text" id="acity02" placeholder="请选择省、市、区">
+                                    </li>
+                                    <li class="address">
+                                        <span>具体地址：</span><textarea placeholder="请输具体的街道地址"></textarea>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button07">
+                        <img src="img/button07_1.png" alt="" class="img">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!--超值购-->
     <div id="index_2" v-if="status == 1 && shop_type == 2">
@@ -272,7 +352,7 @@
             //状态控制
             status:1, //页面状态：0-加载页面、1-首页
             shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
-            subPage:0,//内页流程步骤控制：
+            subPage:1,//内页流程步骤控制：
             aa:true,
             //加载页参数：
             num01:'0%',
@@ -286,7 +366,7 @@
                 {class:'button05 bounceIn',img:'img/button05.png'}
             ],
             //超值购弹窗
-            popUp01:0,//0:不显示任何弹窗
+            popUp01:1,//0:不显示任何弹窗
             // 超值购购买协议同意状态
             agrees:false
         },
@@ -332,7 +412,7 @@
                         type:'bullets',
                     }
                 })
-            //选择省市区
+            //超值购选择省市区
             !function () {
                 var $target = $('#acity');
 
@@ -348,6 +428,24 @@
                 });
             }();
             $('#acity').focusin(function () {
+                $(this).blur();
+            })
+            // 至尊购选择省市区
+            !function () {
+                var $target = $('#acity02');
+
+                $target.citySelect();
+
+                $target.on('click', function (event) {
+                    event.stopPropagation();
+                    $target.citySelect('open');
+                });
+
+                $target.on('done.ydui.cityselect', function (ret) {
+                    $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+                });
+            }();
+            $('#acity02').focusin(function () {
                 $(this).blur();
             })
         },
