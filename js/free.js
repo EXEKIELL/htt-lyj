@@ -62,7 +62,7 @@ function upImg(id,index,imgBox)
                     //赋值到隐藏域传给后台
                     // $('#imgOne').val(resizeImgBase64.substr(22));
                     imgBox[index].img = resizeImgBase64;
-                    console.log(App.fImgList);
+                    console.log(resizeImgBase64);
                 },
                 debug: true
             });
