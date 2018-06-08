@@ -22,6 +22,7 @@
 <audio src="music/music01.mp3" hidden="hidden" preload loop="loop"  id="bg"></audio>
 <!--<img src="img/music.png" id="music" />-->
 <div id="app">
+    <!--加载页-->
     <div id="loading" v-if="status == 0">
         <div>
             <div class="logo">
@@ -114,6 +115,40 @@
                 </div>
             </div>
         </div>
+        <!--抢购成功-->
+        <div class="popUp01" v-if="popUp01 == 2">
+            <img src="img/success01.png" alt="">
+        </div>
+        <!--抢购失败-->
+        <div class="popUp01" v-if="popUp01 == 3">
+            <img src="img/lose01.png" alt="">
+        </div>
+        <!--申请退款-->
+        <div class="popUp01 popUp03" v-if="popUp01 == 4">
+            <div>
+                <div>
+                    <img src="img/img12.png" alt="">
+                    <div class="text">{{moneyData}}</div>
+                    <div class="textarea">
+                        <textarea placeholder="请填写您的退款原因" v-model="reason"></textarea>
+                    </div>
+                    <div class="btns">
+                        <div class="sure" @click="tkbtns('sure')"></div>
+                        <div class="cancel" @click="tkbtns('cancel')"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--通用弹窗-->
+        <div class="popUp02" v-if="popCommon.status">
+            <div>
+                <div class="animated bounceIn">
+                    <img src="img/img11.png" alt="">
+                    <span>{{popCommon.text}}</span>
+                    <div class="button_1" @click="popCommon.status = false"></div>
+                </div>
+            </div>
+        </div>
         <!--页面-->
         <!--内页首页-->
         <div class="list1" v-if="subPage == 0">
@@ -142,23 +177,171 @@
                             <div class="list01">
                                 <ul>
                                     <li>
-                                        <span>姓名：</span><input type="text" placeholder="请输入您的姓名">
+                                        <span>姓名：</span><input type="text" placeholder="请输入您的姓名" v-model="msg01.name">
                                     </li>
                                     <li>
-                                        <span>电话：</span><input type="text" placeholder="请输入11位手机号码">
+                                        <span>电话：</span><input type="number" placeholder="请输入11位手机号码" v-model="msg01.phone">
                                     </li>
                                     <li class="city">
-                                        <span>城市：</span><input type="text" id="acity02" placeholder="请选择省、市、区">
+                                        <span>城市：</span><input type="text" id="acity02" placeholder="请选择省、市、区" v-model="msg01.city">
                                     </li>
                                     <li class="address">
-                                        <span>具体地址：</span><textarea placeholder="请输具体的街道地址"></textarea>
+                                        <span>具体地址：</span><textarea placeholder="请输具体的街道地址" v-model="msg01.address"></textarea>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="button07">
-                        <img src="img/button07_1.png" alt="" class="img">
+                        <img src="img/button07_1.png" alt="" class="img" @click="submit01">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--预约成功-->
+        <div class="list3" v-if="subPage == 2">
+            <img src="img/bj13.png" alt="">
+            <div class="buttton13">
+                <img src="img/button13.png" alt="">
+            </div>
+        </div>
+        <!--抢购成功-->
+        <div class="list4" v-if="subPage == 3">
+            <img src="img/img07.png" alt="">
+            <div class="return">
+                <img src="img/return.png" alt="">
+            </div>
+            <div class="logo">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="button14">
+                <img src="img/button14.png" alt="">
+            </div>
+            <div class="buttons">
+                <div class="button">
+                    <img src="img/button15.png" alt="">
+                </div>
+                <div class="button">
+                    <img src="img/button16.png" alt="">
+                </div>
+                <div class="button">
+                    <img src="img/button17.png" alt="">
+                </div>
+            </div>
+        </div>
+        <!--抢购失败-->
+        <div class="list4" v-if="subPage == 4">
+            <img src="img/img08.png" alt="" style="top: -1%;">
+            <div class="return">
+                <img src="img/return.png" alt="">
+            </div>
+            <div class="logo">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="buttons" style="width: 35%;">
+                <div class="button">
+                    <img src="img/button15.png" alt="">
+                </div>
+            </div>
+        </div>
+        <!--安装凭证码-->
+        <div class="i-2" v-if="subPage == 5">
+            <div class="return"><img src="img/return.png" alt="" class="img"></div>
+            <div class="logo01" style="top: -5%;">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="messageWrap">
+                <img src="img/bj06.png" alt="">
+                <div>
+                    <div class="mesTitle">
+                        <img src="img/popTitle06.png" alt="">
+                    </div>
+                    <div class="mesList mesList01">
+                        <img src="img/img09.png" alt="">
+                        <div class="num">
+                            <span>3</span><span>6</span><span>9</span><span>8</span><span>7</span><span>7</span>
+                        </div>
+                    </div>
+                    <div class="button07" v-if="use">
+                        <img src="img/button13.png" alt="" class="img">
+                    </div>
+                    <div class="button07" v-else>
+                        <img src="img/button18.png" alt="" class="img">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--支付成功-->
+        <div class="i-3 i-3-1" v-if="subPage == 6">
+            <div class="img01">
+                <img src="img/img10.png" alt="">
+            </div>
+            <a class="button11">
+                <img src="img/button19.png" alt="">
+            </a>
+        </div>
+        <!--开发票-->
+        <div class="i-2 i-2-1" v-if="subPage == 7">
+            <!--发票通用弹窗-->
+            <div class="popUp02" v-if="fpCommon.status">
+                <div>
+                    <div class="animated bounceIn">
+                        <img src="img/img11.png" alt="">
+                        <span>{{fpCommon.text}}</span>
+                        <div class="button_1" @click="fpCommon.status = false"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="return"><img src="img/return.png" alt="" class="img"></div>
+            <div class="logo01">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="messageWrap">
+                <img src="img/bj06.png" alt="">
+                <div>
+                    <div class="mesTitle">
+                        <img src="img/title03.png" alt="">
+                    </div>
+                    <div class="mesList">
+                        <div>
+                            <div class="nav">
+                                <div class="nav01 nav01_sel" @click="sel01('nav01')"></div>
+                                <div class="nav02" @click="sel01('nav02')"></div>
+                            </div>
+                            <div class="cont02">
+                                <img src="img/bj15.png" alt="">
+                                <ul>
+                                    <li v-if="types == '企业发票'">
+                                        <span>发票类型：</span>
+                                        <div class="select02">
+                                            {{fpmessage01.invoice_type}}
+                                            <select name="fapiao" id="fapiao" v-model="fpmessage01.invoice_type">
+                                                <option value="普通发票">普通发票</option>
+                                                <option value="专有发票">专有发票</option>
+                                            </select>
+                                        </div>
+                                    </li>
+                                    <li v-else>
+                                        <span>发票类型：</span><input type="text" v-model="fpmessage01.invoice_type" disabled>
+                                    </li>
+                                    <li>
+                                        <span>发票金额：</span><input type="text" v-model="fpmessage01.money" disabled>
+                                    </li>
+                                    <li>
+                                        <span>发票抬头：</span><input type="text" v-model="fpmessage01.rise" placeholder="请输入发票抬头">
+                                    </li>
+                                    <li v-if="types == '企业发票'">
+                                        <span>识别号：</span><input type="text" v-model="fpmessage01.code" placeholder="请在此填写纳税人识别号">
+                                    </li>
+                                    <li>
+                                        <span>电子邮箱：</span><input type="text" v-model="fpmessage01.mail" placeholder="用于向您发送电子发票">
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button07">
+                        <img src="img/button10.png" alt="" class="img" @click="fpbtn01">
                     </div>
                 </div>
             </div>
@@ -170,7 +353,7 @@
         <!--活动规则-->
         <div class="popUp01" v-if="popUp01 == 1">
             <div>
-                <div class="wrap">
+                <div class="wrap animated bounceInDown">
                     <img src="img/bj05.png" alt="">
                     <div class="close">
                         <img src="img/close01.png" alt="" class="img" @click="close">
@@ -196,7 +379,7 @@
                         <img src="img/popTitle02.png" alt="">
                     </div>
                     <div class="cont01">
-                        <img src="img/img02.png" alt="" style="width: 80%;margin-bottom: 0.8rem;">
+                        <img src="img/img02.png" alt="" style="width: 80%;margin-bottom: 0.4rem;">
                         <div class="button08" style="width: 65%;">
                             <img src="img/button08.png" alt="" class="img">
                         </div>
@@ -213,7 +396,7 @@
                         <img src="img/close01.png" alt="" class="img" @click="close">
                     </div>
                     <div class="title01">
-                        <img src="img/popTitle03.png" alt="">
+                        <img src="img/title04.png" alt="">
                     </div>
                     <div class="cont01">
                         <img src="img/img03.png" alt="" style="width: 50%;margin-bottom: 0.2rem">
@@ -231,7 +414,7 @@
         <!--购买协议-->
         <div class="popUp01" v-if="popUp01 == 4">
                 <div>
-                    <div class="wrap">
+                    <div class="wrap animated bounceInDown">
                         <img src="img/bj05.png" alt="">
                         <div class="close">
                             <img src="img/close01.png" alt="" class="img" @click="close">
@@ -239,9 +422,9 @@
                         <div class="title01">
                             <img src="img/popTitle05.png" alt="">
                         </div>
-                        <div class="cont01" style="top: 17%;">
+                        <div class="cont01" style="top: 15%;">
                             <div class="c1">
-                                <p>超值券的使用规则请仔细参照本活动首页<span @click="navTo">“活动规则”</span>，除超值券本身不能正常使用外，一经购买，一律不予退款。（例如超值券逾期未使用、消费者操作流程失误，此类情况属消费者个人失误行为，不予退款）</p>
+                                <p>超值券的使用规则请仔细参照活动首页<span @click="navTo">“活动规则”</span>，除超值券本身不能正常使用外，一经购买，一律不予退款。（例如超值券逾期未使用、消费者操作流程失误，此类情况属消费者个人失误行为，不予退款）</p>
                             </div>
                             <div class="c2" @click="agrees = !agrees">
                                 <div class="select01" :class="{select01_sel:agrees}"></div>
@@ -258,22 +441,24 @@
             </div>
         <!--页面-->
         <!--内页首页-->
-        <div class="i-1" v-if="subPage == 0">
+        <div id="shouye" class="i-1 GW-1211" v-if="subPage == 0">
             <div class="return"><img src="img/return.png" alt="" class="img"></div>
             <div class="list2">
                 <div class="swiper-container swiper01">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
-                            <img src="img/product03.png" alt="">
+                            <img src="img/GW-1211.png" alt="">
                         </div>
                         <div class="swiper-slide">
-                            <img src="img/product03.png" alt="">
+                            <img src="img/GW-1362.png" alt="">
                         </div>
                         <div class="swiper-slide">
-                            <img src="img/product03.png" alt="">
+                            <img src="img/GW-1572.png" alt="">
                         </div>
                     </div>
                     <div class="swiper-pagination pagin01"></div>
+                    <div class="swiper-button-prev prev1"></div>
+                    <div class="swiper-button-next next1"></div>
                 </div>
             </div>
             <div class="zhiyin move01"><img src="img/img01.png" alt=""></div>
@@ -327,6 +512,26 @@
                 <img src="img/button11.png" alt="">
             </a>
         </div>
+        <!--我的超值券-->
+        <div class="i-4" v-if="subPage == 3">
+            <div class="i-4-top">
+                <div class="return">
+                    <img src="img/return.png" alt="" class="img">
+                </div>
+                <div class="quan" v-if="quanUse">
+                    <img src="img/quan.png" alt="">
+                    <div class="useBtn">
+
+                    </div>
+                </div>
+                <div class="quan" v-else>
+                    <img src="img/quan_used.png" alt="">
+                </div>
+            </div>
+            <div class="i-4-bottom">
+
+            </div>
+        </div>
     </div>
     <!--换新购-->
     <div id="index_3" v-if="status == 1 && shop_type == 3">
@@ -349,10 +554,11 @@
     var App = new Vue({
         el:'#app',
         data:{
+            token:'',
             //状态控制
             status:1, //页面状态：0-加载页面、1-首页
             shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
-            subPage:1,//内页流程步骤控制：
+            subPage:3,//内页流程步骤控制：
             aa:true,
             //加载页参数：
             num01:'0%',
@@ -366,9 +572,46 @@
                 {class:'button05 bounceIn',img:'img/button05.png'}
             ],
             //超值购弹窗
-            popUp01:1,//0:不显示任何弹窗
+            popUp01:0,//0:不显示任何弹窗
             // 超值购购买协议同意状态
-            agrees:false
+            agrees:false,
+            // 超值购券使用状态
+            quanUse:true,
+            //至尊购通用弹窗
+            popCommon:{
+              status:false,
+              text:''
+            },
+            // 申请退款原因
+            reason:'',
+            // 至尊购凭证码按钮
+            use:true,
+            // 至尊购填写表单信息
+            msg01:{
+              name:'',
+              phone:'',
+              city:'',
+              address:'',
+              type:'purchase'
+            },
+            // 至尊购发票
+            types:'个人发票',//发票tab选择
+            fptype01:'普通发票',//发票类型
+            fpmessage01:{//发票表单信息
+                u_id:59938,//用户id
+                o_id:2,//订单id
+                invoice_type:'普通发票',
+                money:9999,
+                rise:'',
+                code:'',
+                mail:'',
+                type:'Invoice'
+            },
+            fpCommon:{//发票通用弹窗参数
+                status:false,
+                text:''
+            },
+            moneyData:'预定金99元'//申请退款金额
         },
         methods:{
            // 首页方法：
@@ -400,9 +643,111 @@
             // 超值购购买协议活动规则跳转
             navTo(){
               this.popUp01 = 1
+            },
+            // 至尊购开发票tab切换s
+            sel01(item){
+               $(event.target).parent('div').find('div').removeClass('nav01_sel nav02_sel');
+               if(item == 'nav01'){
+                   $(event.target).addClass('nav01_sel');
+                   this.types = '个人发票'
+               }else{
+                   $(event.target).addClass('nav02_sel');
+                   this.types = '企业发票'
+               }
+
+            },
+            //发票信息提交
+            fpbtn01(){
+                if(this.fpmessage01.rise == ''){
+                    this.fpCommon.status = true;
+                    this.fpCommon.text = '请输入发票的抬头名称';
+                }else if(this.fpmessage01.code == ''&&this.types == '企业发票'){
+                    this.fpCommon.status = true;
+                    this.fpCommon.text = '请输入发票的识别号';
+                }else if(this.fpmessage01.mail == ''){
+                    this.fpCommon.status = true;
+                    this.fpCommon.text = '请输入发票的电子邮箱';
+                }else{
+                    console.log(this.fpmessage01);
+                    const that = this;
+                    this.fpmessage01.types = this.types;
+                    this.fpmessage01.token = this.token;
+                    console.log(this.fpmessage01.types)
+                    $.post(
+                        'https://haotaitai.hengdikeji.com/index.php/shop/api/dataForm',
+                        that.fpmessage01,
+                        function (data) {
+                            console.log(data)
+                            if(data.status == 0){
+                                console.log(1)
+                                that.fpCommon.status = true;
+                                that.fpCommon.text = data.msg;
+                                that.token = data.token;
+                                console.log(that.token)
+                            }else{
+                                console.log(2)
+                                that.fpCommon.status = true;
+                                that.fpCommon.text = '发票申请成功';
+                                that.token = data.token;
+                                console.log(that.token)
+                            }
+                        }
+                    )
+                }
+            },
+            // 退款按钮
+            tkbtns(item){
+                if(item == 'sure'){
+                    if(this.reason == ''){
+                        this.popCommon.status = true;
+                        this.popCommon.text = '请填写您的退款原因'
+                    }else{
+                        console.log(this.reason);
+                    }
+                }else{
+                    this.popUp01 = 0;
+                }
+            },
+            // 至尊购信息提交
+            submit01(){
+               const that = this;
+               if(this.msg01.name == ''){
+                   this.popCommon.status = true;
+                   this.popCommon.text = '用户名不能为空';
+               }else if(this.msg01.phone == ''){
+                   this.popCommon.status = true;
+                   this.popCommon.text = '手机号不能为空';
+               }else if(this.msg01.city == ''){
+                   this.popCommon.status = true;
+                   this.popCommon.text = '请选择城市';
+               }else if(this.msg01.address == ''){
+                   this.popCommon.status = true;
+                   this.popCommon.text = '请填写详细地址';
+               }else{
+                   this.msg01.token = this.token;
+                   console.log(this.msg01)
+                   $.post(
+                       'https://haotaitai.hengdikeji.com/index.php/shop/api/dataForm',
+                       that.msg01,
+                       function (data) {
+                           console.log(data)
+                           if(data.status == 0){
+                               that.popCommon.status = true;
+                               that.popCommon.text = data.msg;
+                               that.token = data.token;
+                           }else{
+                               that.popCommon.status = true;
+                               that.popCommon.text = '发票申请成功';
+                               that.token = data.token;
+                               console.log(that.token);
+                           }
+                       }
+                   )
+               }
             }
         },
         updated(){
+            const that = this;
             $('.img').click(function () {
                 return false
             });
@@ -410,6 +755,23 @@
                     pagination:{
                         el:'.pagin01',
                         type:'bullets',
+                    },
+                    navigation: {
+                        nextEl: '.next1',
+                        prevEl: '.prev1',
+                    },
+                    on:{
+                        slideChangeTransitionStart:function () {
+                            console.log(1)
+                            $('#shouye').removeClass('GW-1572 GW-1211 GW-1362');
+                            if(this.activeIndex == 0){
+                                $('#shouye').addClass('GW-1211');
+                            }else if(this.activeIndex == 1){
+                                $('#shouye').addClass('GW-1362');
+                            }else if(this.activeIndex == 2){
+                                $('#shouye').addClass('GW-1572');
+                            }
+                        }
                     }
                 })
             //超值购选择省市区
@@ -442,7 +804,8 @@
                 });
 
                 $target.on('done.ydui.cityselect', function (ret) {
-                    $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+                    $(this).val(ret.provance + '市 ' + ret.city + ' ' + ret.area);
+                    that.msg01.city = ret.provance + '市 ' + ret.city + ' ' + ret.area;
                 });
             }();
             $('#acity02').focusin(function () {

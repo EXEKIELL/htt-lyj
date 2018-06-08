@@ -181,6 +181,8 @@
       left: 0;
       z-index: 1000;
       background-color: rgba(0, 0, 0, 0.5); }
+      #app #index_1 .popUp01 img {
+        width: 100%; }
       #app #index_1 .popUp01 > div {
         width: 100%;
         height: 100%;
@@ -279,6 +281,92 @@
               #app #index_1 .popUp01 > div .wrap .wrap-2 .c2 p {
                 line-height: 0.4rem;
                 text-align: justify; }
+    #app #index_1 .popUp02 {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000; }
+      #app #index_1 .popUp02 > div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: -webkit-flex;
+        -webkit-justify-content: center;
+        -webkit-align-items: center; }
+        #app #index_1 .popUp02 > div > div {
+          width: 70%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          display: -webkit-flex;
+          -webkit-justify-content: center;
+          -webkit-align-items: center;
+          position: relative; }
+          #app #index_1 .popUp02 > div > div img {
+            width: 100%; }
+          #app #index_1 .popUp02 > div > div span {
+            position: absolute;
+            font-size: 0.3rem;
+            color: #075fa0;
+            width: 80%;
+            text-align: center;
+            line-height: 0.5rem; }
+          #app #index_1 .popUp02 > div > div .button_1 {
+            position: absolute;
+            top: 70%;
+            width: 40%;
+            height: 22%; }
+    #app #index_1 .popUp03 > div > div {
+      width: 80%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: -webkit-flex;
+      -webkit-justify-content: center;
+      -webkit-align-items: center;
+      position: relative; }
+      #app #index_1 .popUp03 > div > div > div {
+        position: absolute; }
+      #app #index_1 .popUp03 > div > div .text {
+        top: 20%;
+        color: #1883c3;
+        font-size: 0.34rem; }
+      #app #index_1 .popUp03 > div > div .textarea {
+        width: 76%;
+        height: 27%;
+        top: 39%; }
+        #app #index_1 .popUp03 > div > div .textarea textarea {
+          width: 100%;
+          height: 100%;
+          font-size: 0.26rem;
+          color: #FFFFFF;
+          resize: none;
+          border: 0;
+          background-color: transparent; }
+        #app #index_1 .popUp03 > div > div .textarea textarea::placeholder {
+          color: #60ccf3;
+          font-size: 0.26rem; }
+        #app #index_1 .popUp03 > div > div .textarea textarea::-webkit-input-placeholder {
+          color: #60ccf3;
+          font-size: 0.26rem; }
+      #app #index_1 .popUp03 > div > div .btns {
+        width: 79%;
+        height: 12%;
+        top: 76%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        display: -webkit-flex;
+        -webkit-justify-content: space-between;
+        -webkit-align-items: center; }
+        #app #index_1 .popUp03 > div > div .btns > div {
+          width: 48%;
+          height: 100%; }
     #app #index_1 .list1 {
       background: url("../img/bj11.png") no-repeat;
       background-size: 100% 100%;
@@ -339,11 +427,37 @@
             width: 60%;
             margin-top: -4%;
             margin-bottom: 5%; }
+          #app #index_1 .i-2 .messageWrap > div .mesList01 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display: -webkit-flex;
+            -webkit-justify-content: center;
+            -webkit-align-items: center; }
           #app #index_1 .i-2 .messageWrap > div .mesList {
             width: 100%;
             height: 75%;
             font-size: 0.3rem;
-            color: #ffffff; }
+            color: #ffffff;
+            position: relative; }
+            #app #index_1 .i-2 .messageWrap > div .mesList > img {
+              width: 92%;
+              margin: auto; }
+            #app #index_1 .i-2 .messageWrap > div .mesList .num {
+              margin: auto;
+              width: 76%;
+              display: flex;
+              justify-content: space-between;
+              flex-direction: row;
+              align-items: center;
+              display: -webkit-flex;
+              -webkit-align-items: center;
+              -webkit-justify-content: space-between;
+              -webkit-flex-direction: row;
+              height: initial;
+              position: absolute;
+              top: 69%;
+              font-size: 0.43rem; }
             #app #index_1 .i-2 .messageWrap > div .mesList > div {
               width: 100%;
               height: 100%;
@@ -423,7 +537,212 @@
                       color: rgba(149, 253, 253, 0.5);
                       text-indent: 1.5rem; }
           #app #index_1 .i-2 .messageWrap > div .button07 {
-            width: 50%; }
+            width: 50%;
+            position: relative;
+            z-index: 50; }
+    #app #index_1 .i-2-1 .messageWrap > div .mesList > div {
+      width: 91%;
+      margin: auto; }
+      #app #index_1 .i-2-1 .messageWrap > div .mesList > div > div {
+        position: relative; }
+      #app #index_1 .i-2-1 .messageWrap > div .mesList > div .nav {
+        top: 4%;
+        width: 85%;
+        height: 12%;
+        display: flex;
+        display: -webkit-flex;
+        z-index: 10; }
+        #app #index_1 .i-2-1 .messageWrap > div .mesList > div .nav > div {
+          width: 50%;
+          height: 100%; }
+        #app #index_1 .i-2-1 .messageWrap > div .mesList > div .nav .nav01 {
+          background: url("../img/nav01.png") no-repeat;
+          background-size: 100% auto; }
+        #app #index_1 .i-2-1 .messageWrap > div .mesList > div .nav .nav01_sel {
+          background: url("../img/nav01_sel.png") no-repeat;
+          background-size: 100% auto; }
+        #app #index_1 .i-2-1 .messageWrap > div .mesList > div .nav .nav02 {
+          background: url("../img/nav02.png") no-repeat;
+          background-size: 100% auto; }
+        #app #index_1 .i-2-1 .messageWrap > div .mesList > div .nav .nav02_sel {
+          background: url("../img/nav02_sel.png") no-repeat;
+          background-size: 100% auto; }
+      #app #index_1 .i-2-1 .messageWrap > div .mesList > div .cont02 {
+        z-index: 20;
+        position: relative; }
+        #app #index_1 .i-2-1 .messageWrap > div .mesList > div .cont02 > ul {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          display: -webkit-flex;
+          -webkit-justify-content: center;
+          -webkit-align-items: center;
+          -webkit-flex-direction: column; }
+          #app #index_1 .i-2-1 .messageWrap > div .mesList > div .cont02 > ul > li {
+            display: flex;
+            align-items: center;
+            display: -webkit-flex;
+            -webkit-align-items: center;
+            width: 90%;
+            height: 13%;
+            background: url("../img/bj07_1.png") no-repeat;
+            background-size: 100% 100%;
+            margin-bottom: 0.2rem;
+            padding: 0 0.2rem; }
+            #app #index_1 .i-2-1 .messageWrap > div .mesList > div .cont02 > ul > li span {
+              display: inline-block;
+              min-width: 1.6rem;
+              text-align: right; }
+            #app #index_1 .i-2-1 .messageWrap > div .mesList > div .cont02 > ul > li input {
+              width: 100%;
+              color: #FFFFFF;
+              border: 0;
+              background-color: transparent; }
+            #app #index_1 .i-2-1 .messageWrap > div .mesList > div .cont02 > ul > li input::placeholder {
+              color: rgba(149, 253, 253, 0.5); }
+            #app #index_1 .i-2-1 .messageWrap > div .mesList > div .cont02 > ul > li input::-webkit-input-placeholder {
+              color: rgba(149, 253, 253, 0.5); }
+            #app #index_1 .i-2-1 .messageWrap > div .mesList > div .cont02 > ul > li .select02 {
+              width: 100%;
+              position: relative; }
+              #app #index_1 .i-2-1 .messageWrap > div .mesList > div .cont02 > ul > li .select02 select {
+                width: 100%;
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0; }
+    #app #index_1 .i-2-1 .popUp02 {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000; }
+      #app #index_1 .i-2-1 .popUp02 > div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: -webkit-flex;
+        -webkit-justify-content: center;
+        -webkit-align-items: center; }
+        #app #index_1 .i-2-1 .popUp02 > div > div {
+          width: 70%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          display: -webkit-flex;
+          -webkit-justify-content: center;
+          -webkit-align-items: center;
+          position: relative; }
+          #app #index_1 .i-2-1 .popUp02 > div > div img {
+            width: 100%; }
+          #app #index_1 .i-2-1 .popUp02 > div > div span {
+            position: absolute;
+            font-size: 0.3rem;
+            color: #075fa0;
+            width: 80%;
+            text-align: center;
+            line-height: 0.5rem; }
+          #app #index_1 .i-2-1 .popUp02 > div > div .button_1 {
+            position: absolute;
+            top: 70%;
+            width: 40%;
+            height: 22%; }
+    #app #index_1 .list3 {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: -webkit-flex;
+      -webkit-align-items: center;
+      -webkit-justify-content: center;
+      background: #0763a4; }
+      #app #index_1 .list3 img {
+        width: 100%; }
+      #app #index_1 .list3 .buttton13 {
+        position: absolute;
+        width: 45%;
+        top: 60%; }
+    #app #index_1 .list4 {
+      background: url("../img/bj14.png") no-repeat;
+      background-size: 100% 100%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: -webkit-flex;
+      -webkit-justify-content: center;
+      -webkit-align-items: center; }
+      #app #index_1 .list4 > img {
+        position: relative;
+        top: -8%; }
+      #app #index_1 .list4 img {
+        width: 100%; }
+      #app #index_1 .list4 > div {
+        position: absolute; }
+      #app #index_1 .list4 .return {
+        width: 18%;
+        left: 0;
+        top: 3%; }
+      #app #index_1 .list4 .logo {
+        width: 30%;
+        right: 4%;
+        top: 5%; }
+      #app #index_1 .list4 .button14 {
+        width: 40%;
+        top: 70%; }
+      #app #index_1 .list4 .buttons {
+        width: 85%;
+        top: 80%;
+        display: flex;
+        align-items: center;
+        display: -webkit-flex;
+        -webkit-align-items: center; }
+        #app #index_1 .list4 .buttons > div {
+          margin-right: 0.1rem; }
+        #app #index_1 .list4 .buttons > div:last-child {
+          margin-right: 0; }
+    #app #index_1 .i-3 {
+      background: url("../img/bj10.png") no-repeat;
+      background-size: 100% 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      display: -webkit-flex;
+      -webkit-justify-content: center;
+      -webkit-align-items: center;
+      -webkit-flex-direction: column; }
+      #app #index_1 .i-3 img {
+        width: 100%; }
+      #app #index_1 .i-3 .img01 {
+        width: 75%;
+        margin-bottom: 0.2rem; }
+      #app #index_1 .i-3 .button11 {
+        width: 50%;
+        display: block; }
+    #app #index_1 .i-3-1 {
+      position: relative;
+      background-image: initial;
+      background-color: #076bac; }
+      #app #index_1 .i-3-1 .img01 {
+        position: absolute;
+        width: 100%;
+        height: 100%; }
+      #app #index_1 .i-3-1 .button11 {
+        position: absolute;
+        top: 60%;
+        width: 55%;
+        margin-left: 0.3rem; }
   #app #index_2 {
     width: 100%;
     height: 100%; }
@@ -530,8 +849,6 @@
             width: 60%;
             top: -3%; }
     #app #index_2 .i-1 {
-      background: url("../img/bj04.png") no-repeat;
-      background-size: 100% 100%;
       position: relative;
       display: flex;
       justify-content: center;
@@ -568,12 +885,22 @@
           -webkit-align-items: center;
           -webkit-justify-content: center; }
         #app #index_2 .i-1 .list2 .pagin01 {
-          bottom: -5px; }
+          bottom: 5px; }
           #app #index_2 .i-1 .list2 .pagin01 .swiper-pagination-bullet {
             opacity: 1;
             background-color: #d2d2d2; }
           #app #index_2 .i-1 .list2 .pagin01 .swiper-pagination-bullet-active {
             background-color: #02bcea; }
+        #app #index_2 .i-1 .list2 .prev1 {
+          background-image: url("../img/left01.png");
+          background-size: 60% auto;
+          left: 0; }
+        #app #index_2 .i-1 .list2 .next1 {
+          background-image: url("../img/right01.png");
+          background-size: 60% auto;
+          right: 0; }
+        #app #index_2 .i-1 .list2 .swiper-button-next.swiper-button-disabled, #app #index_2 .i-1 .list2 .swiper-button-prev.swiper-button-disabled {
+          opacity: 0; }
         #app #index_2 .i-1 .list2 img {
           width: 80%; }
       #app #index_2 .i-1 .zhiyin {
@@ -583,6 +910,15 @@
         width: 40%;
         top: 87%;
         margin-left: 0.05rem; }
+    #app #index_2 .GW-1572 {
+      background: url("../img/bj_GW-1572.png") no-repeat;
+      background-size: 100% 100%; }
+    #app #index_2 .GW-1211 {
+      background: url("../img/bj_GW-1211.png") no-repeat;
+      background-size: 100% 100%; }
+    #app #index_2 .GW-1362 {
+      background: url("../img/bj_GW-1362.png") no-repeat;
+      background-size: 100% 100%; }
     #app #index_2 .i-2 {
       background-color: #0763a4;
       position: relative;
@@ -724,9 +1060,46 @@
         width: 100%; }
       #app #index_2 .i-3 .img01 {
         width: 75%;
-        margin-bottom: 0.2rem; }
+        margin-bottom: 0.45rem; }
       #app #index_2 .i-3 .button11 {
         width: 50%;
         display: block; }
+    #app #index_2 .i-4 img {
+      width: 100%; }
+    #app #index_2 .i-4 .i-4-top {
+      width: 100%;
+      height: 90%;
+      background: url("../img/bj16.png") no-repeat;
+      background-size: 100% 100%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      display: -webkit-flex;
+      -webkit-justify-content: center; }
+      #app #index_2 .i-4 .i-4-top > div {
+        position: absolute; }
+      #app #index_2 .i-4 .i-4-top .return {
+        width: 18%;
+        left: 0;
+        top: 3%; }
+      #app #index_2 .i-4 .i-4-top .quan {
+        width: 90%;
+        top: 6%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: -webkit-flex;
+        -webkit-justify-content: center;
+        -webkit-align-items: center; }
+        #app #index_2 .i-4 .i-4-top .quan .useBtn {
+          position: absolute;
+          width: 47%;
+          height: 12%;
+          top: 77%; }
+    #app #index_2 .i-4 .i-4-bottom {
+      width: 100%;
+      height: 10%;
+      background: url("../img/bj16_1.png") no-repeat;
+      background-size: 100% 100%; }
 
 /*# sourceMappingURL=index.css.map */
