@@ -822,13 +822,13 @@
                  <img src="img/freeAddressBack.png"/>
                 <div class="freeFrom">
                     <!--<form>-->
-                        <input type="text" class="finput1" placeholder="请输入您姓名" v-model="freeSubmitArr.name"/>
-                        <input type="text" class="finput2" placeholder="请输入11位手机号码" v-model="freeSubmitArr.phone"/>
-                        <input type="text" id="freeCity" class="finput3" placeholder="请选择" />
-                        <textarea placeholder="请输具体的街道地址" class="ftext1" v-model="freeSubmitArr.address" ></textarea>
-                        <input type="text" class="finput5" placeholder="请输入原品牌" v-model="freeSubmitArr.brand"/>
-                        <input type="text" class="finput6" placeholder="请输入型号" v-model="freeSubmitArr.model"/>
-                        <input type="text" class="finput7" placeholder="请选择年限" :value="yearLimit" disabled v-model="freeSubmitArr.years"/>
+                        <input type="text" class="finput1" placeholder="请输入您姓名" v-model="freeSubmitArr.name" />
+                        <input type="text" class="finput2" placeholder="请输入11位手机号码" v-model="freeSubmitArr.phone"  />
+                        <input type="text" id="freeCity" class="finput3" placeholder="请选择" v-model="freeSubmitArr.city" />
+                        <textarea placeholder="请输具体的街道地址" class="ftext1"  v-model="freeSubmitArr.address" ></textarea>
+                        <input type="text" class="finput5" placeholder="请输入原品牌" v-model="freeSubmitArr.brand"  />
+                        <input type="text" class="finput6" placeholder="请输入型号" v-model="freeSubmitArr.model" />
+                        <input type="text" class="finput7" placeholder="请选择年限" :value="yearLimit" disabled  />
                         <select v-model="yearLimit">
                             <option v-for="(item,index) in 11">{{item+1}}年</option>
                         </select>
@@ -1415,7 +1415,66 @@
             //提交地址
             fSubmit(){
                 var self = this;
-                this.freeIndex = 2;
+                var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+                this.freeSubmitArr.years = this.yearLimit;
+                var arr = [];
+                for(var i=0; i<this.fImgList.length; i++)
+                {
+                    if(this.fImgList[i].img != '')
+                    {
+                        arr.push(this.fImgList[i].img);
+                    }
+                }
+                this.freeSubmitArr.photo = JSON.stringify(arr);
+                if(this.freeSubmitArr.name == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '姓名不能为空！';
+                }else if(this.freeSubmitArr.phone == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '手机号码不能为空！';
+                }else if(!myreg.test(this.freeSubmitArr.phone)){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '手机号码格式错误！';
+                }else if(this.freeSubmitArr.city == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '城市不能为空！';
+                }else if(this.freeSubmitArr.address == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '具体地址不能为空！';
+                }else if(this.freeSubmitArr.brand == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '产品品牌不能为空！';
+                }else if(this.freeSubmitArr.model == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '产品型号不能为空！';
+                }else if(this.freeSubmitArr.years == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '产品年限不能为空！';
+                }else if(this.freeSubmitArr.problem == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '问题不能为空';
+                }else if(this.freeSubmitArr.photo == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '旧产品图片不能为空';
+                }else{
+                    $.post(
+                        'https://haotaitai.hengdikeji.com/index.php/shop/api/dataForm',
+                        self.freeSubmitArr,
+                        function (data) {
+                            if(data.status == 0){
+                                self.popCommon01.status = 1;
+                                self.popCommon01.text = data.msg;
+                                self.token = data.token;
+                            }else{
+                                self.token = data.token;
+                                self.freeIndex = 2;
+                            }
+                        },
+                        'json'
+                    )
+
+                }
+
             },
             //新机合影
             newPhoto(){
@@ -1447,6 +1506,15 @@
                   this.shop_type = 3
               }else if(index == 3){
                   var self = this;
+                  $.get('https://haotaitai.hengdikeji.com/index.php/shop/api/operationOrder',
+                      {
+                          type:'Existence',
+                          u_id:59938,
+                          s_id:3333
+                      }
+                      ,function(data){
+                      console.log(data);
+                  },'json');
                   this.shop_type = 4
                   this.freePopStatus = 0;
                   //设置首页中心高度
@@ -1684,6 +1752,7 @@
 
                 $target.on('done.ydui.cityselect', function (ret) {
                     $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+                    that.freeSubmitArr.city = ret.provance + '市 ' + ret.city + ' ' + ret.area;
                 });
             }();
             // 至尊购选择省市区
