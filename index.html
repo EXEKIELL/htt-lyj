@@ -156,7 +156,7 @@
         <!--内页首页-->
         <div class="list1" v-if="subPage == 0">
             <div class="return">
-                <img src="img/return.png" alt="" class="img">
+                <img src="img/return.png" alt="" class="img" @click="shop_type = 0">
             </div>
             <div class="button12">
                 <img src="img/button12.png" alt="" class="img">
@@ -189,7 +189,7 @@
                                         <span>城市：</span><input type="text" id="acity02" placeholder="请选择省、市、区" v-model="msg01.city">
                                     </li>
                                     <li class="address">
-                                        <span>具体地址：</span><textarea placeholder="请输具体的街道地址" v-model="msg01.address"></textarea>
+                                        <span>具体地址：</span><textarea placeholder="请输入具体的街道地址" v-model="msg01.address"></textarea>
                                     </li>
                                 </ul>
                             </div>
@@ -373,7 +373,7 @@
         <!--抢购失败-->
         <div class="popUp01" v-if="popUp01 == 2">
             <div>
-                <div class="wrap">
+                <div class="wrap animated bounceInDown">
                     <img src="img/bj05.png" alt="">
                     <div class="close">
                         <img src="img/close01.png" alt="" class="img" @click="close">
@@ -393,7 +393,7 @@
         <!--抢购成功-->
         <div class="popUp01" v-if="popUp01 == 3">
             <div>
-                <div class="wrap">
+                <div class="wrap animated bounceInDown">
                     <img src="img/bj05.png" alt="">
                     <div class="close">
                         <img src="img/close01.png" alt="" class="img" @click="close">
@@ -404,11 +404,11 @@
                     <div class="cont01">
                         <img src="img/img03.png" alt="" style="width: 50%;margin-bottom: 0.2rem">
                         <div class="font01">
-                            <div>目前仅剩XXX张超值券！</div>
+                            <div>目前仅剩{{quanNum}}张超值券！</div>
                             <div>赶紧抓紧时间抢了！</div>
                         </div>
                         <div class="button08" style="width: 65%;">
-                            <img src="img/button09.png" alt="" class="img">
+                            <img src="img/button09.png" alt="" class="img" @click="subPage =1;popUp01 = 0">
                         </div>
                     </div>
                 </div>
@@ -442,10 +442,24 @@
                     </div>
                 </div>
             </div>
+        <!--通用弹窗-->
+        <div class="popCommon" v-if="popCommon.status">
+            <div>
+                <div class="animated bounceIn">
+                    <img src="img/bj17.png" alt="">
+                    <div class="close" @click="popCommon.status = false"></div>
+                    <span>{{popCommon.text}}</span>
+                    <div class="buttons">
+                        <div class="cancel" @click="popCommon.status = false"></div>
+                        <div class="sure" @click="quanUse = true;popCommon.status = false"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--页面-->
         <!--内页首页-->
         <div id="shouye" class="i-1 GW-1211" v-if="subPage == 0">
-            <div class="return"><img src="img/return.png" alt="" class="img"></div>
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="shop_type = 0"></div>
             <div class="list2">
                 <div class="swiper-container swiper01">
                     <div class="swiper-wrapper">
@@ -469,7 +483,7 @@
         </div>
         <!--填写信息-->
         <div class="i-2" v-if="subPage == 1">
-            <div class="return"><img src="img/return.png" alt="" class="img"></div>
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="subPage = 0"></div>
             <div class="logo01">
                 <img src="img/logo01.png" alt="">
             </div>
@@ -485,23 +499,23 @@
                             <div class="list01">
                                 <ul>
                                     <li>
-                                        <span>姓名：</span><input type="text" placeholder="请输入您的姓名">
+                                        <span>姓名：</span><input type="text" placeholder="请输入您的姓名" v-model="msg01.name">
                                     </li>
                                     <li>
-                                        <span>电话：</span><input type="text" placeholder="请输入11位手机号码">
+                                        <span>电话：</span><input type="number" placeholder="请输入11位手机号码" v-model="msg01.phone">
                                     </li>
                                     <li class="city">
                                         <span>城市：</span><input type="text" id="acity" placeholder="请选择省、市、区">
                                     </li>
                                     <li class="address">
-                                        <span>具体地址：</span><textarea placeholder="请输具体的街道地址"></textarea>
+                                        <span>具体地址：</span><textarea placeholder="请输具体的街道地址" v-model="msg01.address"></textarea>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="button07">
-                        <img src="img/button07_1.png" alt="" class="img">
+                        <img src="img/button07_1.png" alt="" class="img" @click="submit02">
                     </div>
                 </div>
             </div>
@@ -518,14 +532,12 @@
         <!--我的超值券-->
         <div class="i-4" v-if="subPage == 3">
             <div class="i-4-top">
-                <div class="return">
-                    <img src="img/return.png" alt="" class="img">
+                <div class="return" style="z-index: 500">
+                    <img src="img/return.png" alt="" class="img" @click="shop_type = 0">
                 </div>
-                <div class="quan" v-if="quanUse">
+                <div class="quan" v-if="quanUse == false">
                     <img src="img/quan.png" alt="">
-                    <div class="useBtn">
-
-                    </div>
+                    <div class="useBtn" @click="popCommon.status = true;popCommon.text = '请确认是否使用您的超值券？'"></div>
                 </div>
                 <div class="quan" v-else>
                     <img src="img/quan_used.png" alt="">
@@ -538,7 +550,183 @@
     </div>
     <!--换新购-->
     <div id="index_3" v-if="status == 1 && shop_type == 3">
-        index3
+        <!--弹窗-->
+        <!--活动规则-->
+        <div class="popUp01" v-if="popUp01 == 1">
+            <div>
+                <div class="wrap animated bounceInDown">
+                    <img src="img/bj05.png" alt="">
+                    <div class="close">
+                        <img src="img/close01.png" alt="" class="img" @click="close">
+                    </div>
+                    <div class="title01">
+                        <img src="img/popTitle01.png" alt="">
+                    </div>
+                    <div class="cont01">
+                        <img src="img/cont01.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--抢购失败-->
+        <div class="popUp01" v-if="popUp01 == 2">
+            <div>
+                <div class="wrap animated bounceInDown">
+                    <img src="img/bj05.png" alt="">
+                    <div class="close">
+                        <img src="img/close01.png" alt="" class="img" @click="close">
+                    </div>
+                    <div class="title01">
+                        <img src="img/popTitle02.png" alt="">
+                    </div>
+                    <div class="cont01">
+                        <img src="img/img02.png" alt="" style="width: 80%;margin-bottom: 0.4rem;">
+                        <div class="button08" style="width: 65%;">
+                            <img src="img/button08.png" alt="" class="img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--抢购成功-->
+        <div class="popUp01" v-if="popUp01 == 3">
+            <div>
+                <div class="wrap animated bounceInDown">
+                    <img src="img/bj05.png" alt="">
+                    <div class="close">
+                        <img src="img/close01.png" alt="" class="img" @click="close">
+                    </div>
+                    <div class="title01">
+                        <img src="img/title04.png" alt="">
+                    </div>
+                    <div class="cont01">
+                        <img src="img/img03.png" alt="" style="width: 50%;margin-bottom: 0.2rem">
+                        <div class="font01">
+                            <div>目前仅剩{{quanNum}}张超值券！</div>
+                            <div>赶紧抓紧时间抢了！</div>
+                        </div>
+                        <div class="button08" style="width: 65%;">
+                            <img src="img/button09.png" alt="" class="img" @click="subPage =1;popUp01 = 0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--购买协议-->
+        <div class="popUp01" v-if="popUp01 == 4">
+            <div>
+                <div class="wrap animated bounceInDown">
+                    <img src="img/bj05.png" alt="">
+                    <div class="close">
+                        <img src="img/close01.png" alt="" class="img" @click="close">
+                    </div>
+                    <div class="title01">
+                        <img src="img/popTitle05.png" alt="">
+                    </div>
+                    <div class="cont01" style="top: 15%;">
+                        <div class="c1">
+                            <p>超值券的使用规则请仔细参照活动首页<span @click="navTo">“活动规则”</span>，除超值券本身不能正常使用外，一经购买，一律不予退款。（例如超值券逾期未使用、消费者操作流程失误，此类情况属消费者个人失误行为，不予退款）</p>
+                        </div>
+                        <div class="c2" @click="agrees = !agrees">
+                            <div class="select01" :class="{select01_sel:agrees}"></div>
+                            <div class="select01-cont">
+                                <p>点击确定购买并付款即视为您已同意并了解以上条款，并已清楚了解活动规则。</p>
+                            </div>
+                        </div>
+                        <div class="button08" style="width: 65%;" v-if="agrees">
+                            <img src="img/button10.png" alt="" class="img" @click="btn01">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--通用弹窗-->
+        <div class="popCommon" v-if="popCommon.status">
+            <div>
+                <div class="animated bounceIn">
+                    <img src="img/bj17.png" alt="">
+                    <div class="close" @click="popCommon.status = false"></div>
+                    <span>{{popCommon.text}}</span>
+                    <div class="buttons">
+                        <div class="cancel" @click="popCommon.status = false"></div>
+                        <div class="sure" @click="quanUse03 = true;popCommon.status = false"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--页面-->
+        <!--内页首页-->
+        <div class="i-1" v-if="subPage == 0">
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="shop_type = 0"></div>
+            <div class="zhiyin move01"><img src="img/img01.png" alt=""></div>
+            <div class="button07"><img src="img/button07.png" alt="" class="img" @click="i1Btn01"></div>
+        </div>
+        <!--填写信息-->
+        <div class="i-2" v-if="subPage == 1">
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="subPage = 0"></div>
+            <div class="logo01">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="messageWrap">
+                <img src="img/bj06.png" alt="">
+                <div>
+                    <div class="mesTitle">
+                        <img src="img/popTitle04.png" alt="">
+                    </div>
+                    <div class="mesList">
+                        <div>
+                            <img src="img/img04.png" alt="">
+                            <div class="list01">
+                                <ul>
+                                    <li>
+                                        <span>姓名：</span><input type="text" placeholder="请输入您的姓名" v-model="msg01.name">
+                                    </li>
+                                    <li>
+                                        <span>电话：</span><input type="number" placeholder="请输入11位手机号码" v-model="msg01.phone">
+                                    </li>
+                                    <li class="city">
+                                        <span>城市：</span><input type="text" id="acity03" placeholder="请选择省、市、区">
+                                    </li>
+                                    <li class="address">
+                                        <span>具体地址：</span><textarea placeholder="请输具体的街道地址" v-model="msg01.address"></textarea>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button07">
+                        <img src="img/button07_1.png" alt="" class="img" @click="submit02">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--抢购成功-->
+        <div class="i-3" v-if="subPage == 2">
+            <div class="img01">
+                <img src="img/img05_3.png" alt="">
+            </div>
+            <a href="https://haotaitai.hengdikeji.com/htt/map.html" class="button11">
+                <img src="img/button11.png" alt="">
+            </a>
+        </div>
+        <!--我的抵用券-->
+        <div class="i-4" v-if="subPage == 3">
+            <div class="i-4-top">
+                <div class="return" style="z-index: 500">
+                    <img src="img/return.png" alt="" class="img" @click="shop_type = 0">
+                </div>
+                <div class="quan" v-if="quanUse03 == false">
+                    <img src="img/quan01.png" alt="">
+                    <div class="useBtn" @click="popCommon.status = true;popCommon.text = '请确认是否使用您的抵用券？'"></div>
+                </div>
+                <div class="quan" v-else>
+                    <img src="img/quan01_used.png" alt="">
+                </div>
+            </div>
+            <div class="i-4-bottom">
+
+            </div>
+        </div>
     </div>
     <!--免费购-->
     <div id="index_4" v-if="status == 1 && shop_type == 4">
@@ -785,7 +973,7 @@
                                         <span>发票类型：</span>
                                         <div class="select02">
                                             {{fpmessage01.invoice_type}}
-                                            <select name="fapiao" id="fapiao" v-model="fpmessage01.invoice_type">
+                                            <select name="fapiao" id="fapiao1" v-model="fpmessage01.invoice_type">
                                                 <option value="普通发票">普通发票</option>
                                                 <option value="专有发票">专有发票</option>
                                             </select>
@@ -906,6 +1094,53 @@
             </div>
         </div>
     </div>
+    <!--通用弹窗-->
+    <!--操作失败-->
+    <div class="popUp02" v-if="popCommon01.status == 1">
+        <div>
+            <div class="animated bounceIn">
+                <img src="img/img11.png" alt="">
+                <span>{{popCommon01.text}}</span>
+                <div class="button_1" @click="popCommon01.status = false"></div>
+            </div>
+        </div>
+    </div>
+    <!--操作成功-->
+    <div class="popUp02" v-if="popCommon01.status == 2">
+        <div>
+            <div class="animated bounceIn">
+                <img src="img/img13.png" alt="">
+                <span>{{popCommon01.text}}</span>
+                <div class="button_1" @click="popCommon01.status = false"></div>
+            </div>
+        </div>
+    </div>
+    <!--分享-->
+    <div class="share" v-if="shareWrap" @click="shareWrap = false">
+        <div class="animated bounceIn">
+            <img src="img/share01.png" alt="">
+        </div>
+    </div>
+    <!--活动提醒-->
+    <div class="remind" v-if="remind">
+        <div>
+            <div class="animated bounceInDown">
+                <img src="img/img14.png" alt="">
+                <div class="remindSure" @click="remind = false"></div>
+                <div class="close" @click="remind = false"></div>
+                <div class="text" v-if="reminded">
+                    <div class="text-1">“中华晒衣节，智能超值购”</div>
+                    <div class="text-2">活动已经结束</div>
+                    <div class="text-3">活动时间：X月XX日-X月XX日</div>
+                </div>
+                <div class="text" v-else>
+                    <div class="text-1">“中华晒衣节，智能超值购”</div>
+                    <div class="text-2">X月XX日-X月XX日</div>
+                    <div class="text-4">敬请期待!</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="js/public.js"></script>
 <script src="js/loding.js"></script>
@@ -916,9 +1151,11 @@
         el:'#app',
         data:{
             token:'',
+            u_id:'',
+            productType:[],
             //状态控制
             status:1, //页面状态：0-加载页面、1-首页
-            shop_type:4,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
+            shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
             subPage:0,//内页流程步骤控制：
             aa:true,
             //加载页参数：
@@ -932,12 +1169,25 @@
                 {class:'button04 rotateInUpRight',img:'img/button04.png'},
                 {class:'button05 bounceIn',img:'img/button05.png'}
             ],
+            // 通用弹窗
+            popCommon01:{
+                status:0,//0为关闭
+                text:''
+            },
+            // 分享弹窗
+            shareWrap:false,
+            // 活动提醒弹窗
+            remind:true,
+            // 活动提醒
+            reminded:false,
             //超值购弹窗
             popUp01:1,//0:不显示任何弹窗
             // 超值购购买协议同意状态
             agrees:false,
             // 超值购券使用状态
-            quanUse:true,
+            quanUse:false,
+            // 超值卷剩余数
+            quanNum:'XXX',
             //至尊购通用弹窗
             popCommon:{
               status:false,
@@ -972,6 +1222,9 @@
                 status:false,
                 text:''
             },
+            // 换新购抵用券状态
+            quanUse03:false,
+
             moneyData:'预定金99元',//申请退款金额
             //首页规则---------------------------------------------------------------------------------
             //规则背景图
@@ -1188,7 +1441,8 @@
               if(index == 0){
                   this.shop_type = 1
               }else if(index == 1){
-                  this.shop_type = 2
+                  this.shop_type = 2;
+                  this.popUp01 = 1;
               }else if(index == 2){
                   this.shop_type = 3
               }else if(index == 3){
@@ -1210,21 +1464,63 @@
                   console.log(1);
               }
            },
+            //关闭弹窗
             close(){
                this.popUp01 = 0
             },
+            //超值购我要预约
             i1Btn01(){
-               this.popUp01 = 1
+                const that = this;
+                let id;
+                    for(var i in this.productType){
+                        if(this.productType[i].name == '超值购'){
+                            id = this.productType[i].id
+                        }
+                    }
+                // 获取剩余券数
+                $.get(
+                    'https://haotaitai.hengdikeji.com/index.php/shop/api/shopNumber',
+                    {id:id,token:that.token},
+                    function (data) {
+                        if(data.number<=0){
+                            that.popUp01 = 2
+                        }else{
+                            that.quanNum = data.number;
+                            that.popUp01 = 3
+                        }
+                    }
+                )
             },
             // 超值购弹窗按钮
             btn01(){
                if(this.popUp01 == 4){
-                   this.popUp01 = 0
+                   this.popUp01 = 0;
+                   this.subPage = 2;
                }
             },
             // 超值购购买协议活动规则跳转
             navTo(){
               this.popUp01 = 1
+            },
+            // 超值购信息提交
+            submit02(){
+                if(this.msg01.name == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '姓名不能为空';
+                }else if(this.msg01.phone == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '手机号码不能为空';
+                }else if(this.msg01.city == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '手机号码不能为空';
+                }else if(this.msg01.address == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '具体地址不能为空';
+                }else{
+                    this.msg01.type = 'purchase'
+                    console.log(this.msg01);
+                    this.popUp01 = 4
+                }
             },
             // 至尊购开发票tab切换s
             sel01(item){
@@ -1345,7 +1641,6 @@
                     },
                     on:{
                         slideChangeTransitionStart:function () {
-                            console.log(1)
                             $('#shouye').removeClass('GW-1572 GW-1211 GW-1362');
                             if(this.activeIndex == 0){
                                 $('#shouye').addClass('GW-1211');
@@ -1369,7 +1664,8 @@
                 });
 
                 $target.on('done.ydui.cityselect', function (ret) {
-                    $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+                    $(this).val(ret.provance + '市 ' + ret.city + ' ' + ret.area);
+                    that.msg01.city = ret.provance + '市 ' + ret.city + ' ' + ret.area;
                 });
             }();
             $('#acity').focusin(function () {
@@ -1405,6 +1701,21 @@
                     that.msg01.city = ret.provance + '市 ' + ret.city + ' ' + ret.area;
                 });
             }();
+            // 换新购选择省市区
+            !function () {
+                var $target = $('#acity03');
+                $target.citySelect();
+
+                $target.on('click', function (event) {
+                    event.stopPropagation();
+                    $target.citySelect('open');
+                });
+
+                $target.on('done.ydui.cityselect', function (ret) {
+                    $(this).val(ret.provance + '市 ' + ret.city + ' ' + ret.area);
+                    that.msg01.city = ret.provance + '市 ' + ret.city + ' ' + ret.area;
+                });
+            }();
 
             $('#freeCity').focusin(function () {
                 $(this).blur();
@@ -1415,6 +1726,25 @@
         },
         mounted:function () {
             const that = this;
+            // 获取token
+            $.get(
+                'https://haotaitai.hengdikeji.com/index.php/shop/error/getToken',
+                function (data) {
+                    that.token = data.token;
+                    // 获取商品id
+                    $.get(
+                        'https://haotaitai.hengdikeji.com/index.php/shop/api/getShop',
+                        {token:that.token},
+                        function (data) {
+                            var data = data;
+                            delete data['token'];
+                            that.token = data.token;
+                            that.productType = data;
+                            console.log(data)
+                        }
+                    )
+                }
+            );
             var swiper1 = new Swiper('.swiper-container',{
 
             });

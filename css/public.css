@@ -1,3 +1,117 @@
+.popUp02 {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000; }
+  .popUp02 > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: -webkit-flex;
+    -webkit-justify-content: center;
+    -webkit-align-items: center; }
+    .popUp02 > div > div {
+      width: 70%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: -webkit-flex;
+      -webkit-justify-content: center;
+      -webkit-align-items: center;
+      position: relative; }
+      .popUp02 > div > div img {
+        width: 100%; }
+      .popUp02 > div > div span {
+        position: absolute;
+        font-size: 0.3rem;
+        color: #075fa0;
+        width: 80%;
+        text-align: center;
+        line-height: 0.5rem; }
+      .popUp02 > div > div .button_1 {
+        position: absolute;
+        top: 70%;
+        width: 40%;
+        height: 22%; }
+
+.share {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5); }
+  .share > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: -webkit-flex;
+    -webkit-justify-content: center;
+    -webkit-align-items: center; }
+    .share > div img {
+      width: 95%;
+      margin-top: -50%; }
+
+.remind {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5); }
+  .remind img {
+    width: 100%; }
+  .remind > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    -webkit-justify-content: center; }
+    .remind > div > div {
+      width: 90%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: -webkit-flex;
+      -webkit-align-items: center;
+      -webkit-justify-content: center;
+      position: relative; }
+      .remind > div > div > div {
+        position: absolute; }
+      .remind > div > div .remindSure {
+        width: 51%;
+        height: 10%;
+        top: 81%; }
+      .remind > div > div .close {
+        width: 12%;
+        height: 11%;
+        top: 2%;
+        right: 0; }
+      .remind > div > div .text {
+        font-size: 0.3rem;
+        color: #0d57a3;
+        text-align: center; }
+        .remind > div > div .text > div {
+          margin-bottom: 0.2rem; }
+        .remind > div > div .text > div:last-child {
+          margin-bottom: 0; }
+        .remind > div > div .text .text-2 {
+          font-size: 0.58rem; }
+        .remind > div > div .text .text-4 {
+          letter-spacing: 0.2rem; }
+
 #music {
   position: fixed;
   top: 0.4rem;
