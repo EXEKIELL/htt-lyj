@@ -13,8 +13,11 @@
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/public.css">
     <link rel="stylesheet" href="css/index.css?v=1">
+    <link rel="stylesheet" href="css/bemzj_css.css">
     <script src="js/rem.js"></script>
+    <script src="js/tools.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/free.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.2.6/js/swiper.min.js"></script>
 </head>
@@ -539,12 +542,145 @@
     </div>
     <!--免费购-->
     <div id="index_4" v-if="status == 1 && shop_type == 4">
-        index4
+        <!--活动规则页面-->
+        <div class="freePop01 winFlex" v-if="freePopStatus == 0">
+            <div class="ruleBox animated bounceInDown">
+                <img src="img/freeRule.png"/>
+                <div class="ruleBoxIn">
+                    <div class="clearRules">
+                        <button @click="freePopStatus = -1"></button>
+                    </div>
+                    <div class="ruleContent">
+                        <div class="rcBox" v-for="(items,index) in rules[3]">
+                            <div class="rcTitle">
+                                <p>{{items.title}}</p>
+                            </div>
+                            <div class="rcDetails">
+                                <div v-for="(its,i) in items.content">
+                                    <p>{{its}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--页面-->
+        <!--内页首页-->
+        <div class="i-1" v-if="freeIndex == 0">
+            <div class="return" ><img @click="shop_type = 0" src="img/return.png" alt="" class="img"></div>
+            <div class="list2">
+                <div class="list2Top">
+                    <img src="img/free01.png"/>
+                </div>
+                <div class="list2Mottom winFlex" id="list2Mottom">
+                    <div class="zhiyin move01"><img src="img/img01.png" alt=""></div>
+                    <div class="button07"><img src="img/free04.png" alt="" class="img" @click="freeBook"></div>
+                </div>
+                <div class="list2Bottom">
+                    <img src="img/free02.png"/>
+                </div>
+            </div>
+        </div>
+        <!--填写地址-->
+        <div class="freeAddress" v-if="freeIndex == 1">
+            <div class="return" ><img @click="freeIndex = 0" src="img/return.png" alt="" class="img"></div>
+            <div class="fLogo"><img src="img/logo01.png"/> </div>
+            <div class="freeAddressIn">
+                 <img src="img/freeAddressBack.png"/>
+                <div class="freeFrom">
+                    <!--<form>-->
+                        <input type="text" class="finput1" placeholder="请输入您姓名"/>
+                        <input type="text" class="finput2" placeholder="请输入11位手机号码"/>
+                        <input type="text" id="freeCity" class="finput3" placeholder="请选择"/>
+                        <textarea placeholder="请输具体的街道地址" class="ftext1"></textarea>
+                        <input type="text" class="finput5" placeholder="请输入原品牌"/>
+                        <input type="text" class="finput6" placeholder="请输入型号"/>
+                        <input type="text" class="finput7" placeholder="请输入型号" :value="yearLimit" disabled/>
+                        <select v-model="yearLimit">
+                            <option v-for="(item,index) in 11">{{item+1}}年</option>
+                        </select>
+                        <textarea placeholder="您还可以输入200个字" class="ftext2"></textarea>
+                        <div class="fImgUp">
+                            <div v-for="(item,index) in fImgList">
+                                <div class="fdelImg" v-if="item.img!=''" @click="fdelImg(index)">
+                                    <img src="img/freeClose.png"/>
+                                </div>
+                                <div class="freeInput" v-if="item.img==''">
+                                    <input   :id="'file'+index" type="file" accept="image/*" capture="camera"/>
+                                </div>
+                                <div class="fImgBox" v-if="item.img!=''"  >
+                                    <img :src="item.img" @click="showBImg(item.img)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="freeSubmit">
+                            <button></button>
+                        </div>
+                    <!--</form>-->
+                </div>
+            </div>
+        </div>
+        <!--评价-->
+        <div class="compented" v-if="freeIndex == 2">
+            <div class="return" ><img @click="freeIndex = 0" src="img/return.png" alt="" class="img"></div>
+            <div class="fLogo"><img src="img/logo01.png"/> </div>
+            <div class="compentedIn">
+                <img src="img/compent1.png"/>
+
+                <div class="compentedFrom">
+                    <div class="serveCmm proCmm">
+                        <div v-for="(items,index) in 5" :class="{hasStar:index<=freeComment.produce}" @click="fproCmm(index)"></div>
+                    </div>
+                    <div class="serveCmm">
+                        <div v-for="(items,index) in 5" :class="{hasStar:index<=freeComment.serve}" @click="fserCmm(index)"></div>
+                    </div>
+                    <textarea placeholder="您还可以输入200个字"></textarea>
+                    <div class="fImgUp">
+                        <div v-for="(item,index) in freeComment.fcImg">
+                            <div class="fdelImg" v-if="item.img!=''" @click="fcdelImg(index)">
+                                <img src="img/freeClose.png"/>
+                            </div>
+                            <div class="freeInput" v-if="item.img==''">
+                                <input   :id="'fileCom'+index" type="file" accept="image/*" capture="camera"/>
+                            </div>
+                            <div class="fImgBox" v-if="item.img!=''"  >
+                                <img :src="item.img" @click="showBImg(item.img)"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!--活动规则-->
-    <div id="index_5" v-if="status == 1 && shop_type == 5">
-        index5
+    <div id="index_5" v-if="ruleShow" class="winFlex">
+        <div class="ruleBox animated bounceInDown">
+            <img :src="ruleBack[ruleIndex]"/>
+            <div class="ruleBoxIn">
+                <div class="clearRules">
+                    <button @click="closeRule"></button>
+                </div>
+                <div class="fourBtn">
+                    <button v-for="(items,index) in 4" @click = "ruleIndex = index"></button>
+                </div>
+                <div class="ruleContent">
+                    <div class="rcBox" v-for="(items,index) in rules[ruleIndex]">
+                        <div class="rcTitle">
+                            <p>{{items.title}}</p>
+                        </div>
+                        <div class="rcDetails">
+                            <div v-for="(its,i) in items.content">
+                                <p>{{its}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 </div>
 <script src="js/public.js"></script>
 <script src="js/loding.js"></script>
@@ -611,9 +747,155 @@
                 status:false,
                 text:''
             },
-            moneyData:'预定金99元'//申请退款金额
+            moneyData:'预定金99元',//申请退款金额
+            //规则背景图
+            ruleBack:['img/allrule1.png','img/allrule2.png','img/allrule3.png','img/allrule4.png'],
+            ruleShow:false, //是否显示规则
+            ruleIndex:0, //当前规则表示 0-至尊购、1-超值购、2-换新购、3-免费购
+            //规则详情
+            rules:[
+                [
+                    {
+                        title:'01预约',
+                        content: [
+                            "(1)成功预约的用户有机会获得以9999元抢购价值18888元的神级晾晒神器至尊体验权的特权。",
+                            "(2)预约截止时间：7月18日零点，订金金额为99元，预约名额有限，先到先得。",
+                            "(3)每个用户限预约一次；已预约但中途申请退款的不能再次预约。",
+                            "(4)请填写正确的地址，抢购成功后，会根据所填地址，就近原则安排上门安装，若因地址填写有误，导致产生远程送货费用的，费用由用户自行承担。",
+                            "(5)请填写正确的联系电话，提交预约后，好太太集团会安排工作人员联系用户核实信息，若因电话有误，导致信息无法核实的，好太太集团有权取消其参与资格。",
+                            "(6)未抢购成功的用户，在活动结束后，会按原付款路径退回订金。"
+                        ]
+                    },
+                    {
+                        title:'02尾款支付',
+                        content: [
+                            "(1)7月19日会在好太太公众号公布获得特权的名单；并且会在本活动H5上更新用户的参与状态。",
+                            "(2)用户可以在公众号或再次打开本活动H5查看是否获得特权。",
+                            "(3)获得特权的用户需在规定时间内完成付款，否则好太太集团有权取消其参与资格。",
+                            "(4)尾款支付成功后，5个工作日内，会有工作人员联系用户，确认上门安装事宜。"
+                        ]
+                    },
+                    {
+                        title:'03退款',
+                        content: [
+                            "(1)订金退款：未付尾款前，用户可以申请退回订金，再次点击“至尊购-退款申请”进行申请退款，退款会在20个工作日内退回。",
+                            "(2)未获得特权的用户所交订金，若用户未主动申请退款，在活动结束后，会由好太太集团统一安排退回。",
+                            "(3)退货退款：已安排上门安装，但未实际安装之前，用户可以在线申请退货退款；若已安装，非质量问题不退不换。",
+                            "(4)上述所有退款，都会按用户原支付路径退回。"
+                        ]
+                    },
+                    {
+                        title:'04其它',
+                        content: [
+                            "(4)发票：需要开发票，可以前往 “至尊购-开发票”填写开票信息。"
+                        ]
+                    }
+                ],
+                [
+                    {
+                        title:'',
+                        content:[
+                            "(1)用户在线购买超值券，凭券可以用超值价在实体门店购买指定型号；全国限量10000张。",
+                            "(2)可购买型号：GW-1211（超值价1288元）、GW-1362（超值价1688元）、GW-1572（超值价2488元）",
+                            "(3)每个用户限购一张超值券。",
+                            "(4)每张超值券仅限用于购买一台晾衣机。",
+                            "(5)使用截止日期：2018年7月31日"
+                        ]
+                    }
+                ],
+                [
+                    {
+                        title:'',
+                        content:[
+                            "(1)用户在线购买换新抵用券，凭券到实体门店购买指定型号（具体型号由门店而定）可以减免200元；全国限量50000张。",
+                            "(2)每个用户限购一张换新抵用券。",
+                            "(3)每张焕新抵用券仅限用于购买一台晾衣机。",
+                            "(4)使用截止日期：2018年7月31日"
+                        ]
+                    }
+                ],
+                [
+                    {
+                        title:'',
+                        content:[
+                            "(1)活动发布日起至7月18日零点，用户可以提交第三代智能晾衣机GW-1212的体验申请。",
+                            "(2)好太太集团官方根据所交资料选择客户参与体验活动，全国限量1000个名额。",
+                            "(3)7月19日，会在好太太公众号公布获得特权的名单；并且会在本活动H5上更新用户的参与状态。用户可以在公众号或再次打开本活动H5查看是否获得体验资格。",
+                            "(4)免费体验的晾衣机不含送货安装，全国统一收取399元/台作为送货安装费用。",
+                            "(5)请填写正确的地址，申请成功后，会根据所填地址，就近原则安排上门安装，若因地址填写有误，导致产生远程送货费用的，费用由用户自行承担。",
+                            "(6)请填写正确的联系电话，申请成功后，好太太集团会安排工作人员联系用户核实信息，若因电话有误，导致信息无法核实的，好太太集团有权取消其参与资格。",
+                            "(7)获得体验权的用户需在规定时间内完成送货安装费付款，否则好太太集团有权取消其参与资格。",
+                            "(8)支付成功后，5个工作日内，会有工作人员联系用户，确认上门安装事宜。",
+                            "(9)安装结束后客户需要再次点击“免费购”上传安装效果图。",
+                            "(10)发票：需要开发票，可以前往 “免费购-开发票”填写开票信息。",
+                            "(11)每个用户限申请一次。"
+                        ]
+                    }
+                ],
+
+            ],
+            //免费购
+            freePopStatus:-1,//0规则弹窗
+            freeIndex:2, //免费页面显示
+            yearLimit:"",//年限
+            fImgList:[{'img':''},{'img':''},{'img':''}],//图片数据
+            //免费评价的数据
+            freeComment:{
+                serve:-1,
+                produce:-1,
+                fcImg:[{'img':''},{'img':''},{'img':''}]
+            }
         },
         methods:{
+            //关闭规则页面（免费购）
+            closeRule(){
+                this.ruleShow = false;
+            },
+            //关闭规则页面（免费购）
+            closeRule(){
+                this.ruleShow = false;
+            },
+            //显示大图（免费购）
+            showBImg(src){
+                showBigImg(src);
+            },
+            //删除图片
+            fdelImg(index){
+                var self = this;
+                this.fImgList[index].img = '';
+                setTimeout(function(){
+                    upImg('file'+index,index,self.fImgList);
+                },500);
+            },
+            //删除图片
+            fcdelImg(index){
+                var self = this;
+                this.freeComment.fcImg[index].img = '';
+                setTimeout(function(){
+                    upImg('fileCom'+index,index,self.freeComment.fcImg);
+                },500);
+            },
+            //产片评价
+            fproCmm(index){
+                this.freeComment.produce = index;
+            },
+            //服务评价
+            fserCmm(index){
+                this.freeComment.serve = index;
+            },
+            //我要预约（免费购）
+            freeBook(){
+                var self = this;
+                this.fImgList = [{'img':''},{'img':''},{'img':''}];
+                this.freeIndex = 1;
+                setTimeout(function(){
+                    for(var i=0; i<self.fImgList.length; i++)
+                    {
+                        upImg('file'+i,i,self.fImgList)
+
+                    }
+                },500);
+            },
            // 首页方法：
            btn(index){
               if(index == 0){
@@ -623,9 +905,22 @@
               }else if(index == 2){
                   this.shop_type = 3
               }else if(index == 3){
+                  var self = this;
                   this.shop_type = 4
+                  this.freePopStatus = 0;
+                  //设置首页中心高度
+                  var hTween = setTimeout(function(){
+                      var h1 = $('#index_4 .i-1 .list2 .list2Top img').height();
+                      var h2 =  $('#index_4 .i-1 .list2 .list2Bottom').height()
+                      var h = $(window).height()-h1-h2;
+                      $('#index_4 .i-1 .list2 .list2Mottom').height(h);
+                  },100);
+
+                  //免费购
+
               }else{
-                  this.shop_type = 5
+                  this.ruleShow = true;
+                  console.log(1);
               }
            },
             close(){
@@ -748,6 +1043,7 @@
         },
         updated(){
             const that = this;
+            //////////////////////////////////////////////////////////////
             $('.img').click(function () {
                 return false
             });
@@ -792,10 +1088,24 @@
             $('#acity').focusin(function () {
                 $(this).blur();
             })
+
+            //免费购 3级联动
+            !function () {
+                var $target = $('#freeCity');
+                $target.citySelect();
+
+                $target.on('click', function (event) {
+                    event.stopPropagation();
+                    $target.citySelect('open');
+                });
+
+                $target.on('done.ydui.cityselect', function (ret) {
+                    $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+                });
+            }();
             // 至尊购选择省市区
             !function () {
                 var $target = $('#acity02');
-
                 $target.citySelect();
 
                 $target.on('click', function (event) {
@@ -808,20 +1118,31 @@
                     that.msg01.city = ret.provance + '市 ' + ret.city + ' ' + ret.area;
                 });
             }();
+
+            $('#freeCity').focusin(function () {
+                $(this).blur();
+            })
             $('#acity02').focusin(function () {
                 $(this).blur();
             })
         },
         mounted:function () {
             const that = this;
-            console.log(imgList);
             var swiper1 = new Swiper('.swiper-container',{
 
             });
             //加载完后进入首页
             setTimeout(function () {
                 load(imgList,that)
-            },100)
+            },100);
+
+            // setTimeout(function(){
+            //     for(var i=0; i<that.freeComment.fcImg.length; i++)
+            //     {
+            //         upImg('fileCom'+i,i,that.freeComment.fcImg)
+            //
+            //     }
+            // },500);
         }
     })
 </script>
