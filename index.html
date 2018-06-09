@@ -89,7 +89,7 @@
         <!--购买协议-->
         <div class="popUp01" v-if="popUp01 == 1">
             <div>
-                <div class="wrap">
+                <div class="wrap animated bounceInDown">
                     <div class="wrap-1">
                         <img src="img/bj12_1.png" alt="">
                         <div class="close">
@@ -101,7 +101,18 @@
                     </div>
                     <div class="wrap-2">
                         <div class="c1">
-                            <img src="img/img06.png" alt="">
+                            <div class="ruleContent">
+                                <div class="rcBox" v-for="(items,index) in rules[3]">
+                                    <div class="rcTitle">
+                                        <p>{{items.title}}</p>
+                                    </div>
+                                    <div class="rcDetails">
+                                        <div v-for="(its,i) in items.content">
+                                            <p>{{its}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="c2" @click="agrees = !agrees">
                             <div class="select01" :class="{select01_sel:agrees}"></div>
@@ -160,12 +171,12 @@
                 <img src="img/return.png" alt="" class="img" @click="shop_type = 0">
             </div>
             <div class="button12">
-                <img src="img/button12.png" alt="" class="img">
+                <img src="img/button12.png" alt="" class="img" @click="subPage = 1">
             </div>
         </div>
         <!--填写信息-->
         <div class="i-2" v-if="subPage == 1">
-            <div class="return"><img src="img/return.png" alt="" class="img"></div>
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="shop_type = 0"></div>
             <div class="logo01">
                 <img src="img/logo01.png" alt="">
             </div>
@@ -206,7 +217,7 @@
         <div class="list3" v-if="subPage == 2">
             <img src="img/bj13.png" alt="">
             <div class="buttton13">
-                <img src="img/button13.png" alt="">
+                <img src="img/button13.png" alt="" class="img" @click="shop_type = 0">
             </div>
         </div>
         <!--抢购成功-->
@@ -483,7 +494,7 @@
                     <span>{{popCommon.text}}</span>
                     <div class="buttons">
                         <div class="cancel" @click="popCommon.status = false"></div>
-                        <div class="sure" @click="quanUse = true;popCommon.status = false"></div>
+                        <div class="sure" @click="useDY"></div>
                     </div>
                 </div>
             </div>
@@ -1577,28 +1588,16 @@
                       console.log(res)
                       if(res.data.status == 0){
                           console.log(111)
+                      }else if(res.data.status == 1){
                           that.shop_type = 1;
+                      }else if(res.data.status == 2){
+                          that.shop_type = 1;
+                          that.subPage = 1;
+                          that.popCommon01.status = 2;
+                          that.popCommon01.text = '您有未付款订单，点击确定前往支付！'
                       }
                   })
               }else if(index == 1){ //超值购
-                  // this.shop_type = 2;
-                  // this.popUp01 = 1;
-                  // axiosGet('/index.php/shop/api/operationOrder',{
-                  //     token:that.token,
-                  //     u_id:that.u_id,
-                  //     s_id:that.s_id.s_id_2,
-                  //     type:'existence'
-                  // },function (res) {
-                  //     console.log(res)
-                  //     if(res.data.status == 0){
-                  //         that.shop_type = 2;
-                  //         that.subPage = 3;
-                  //     }else if(res.data.status == 1){
-                  //         that.shop_type = 2;
-                  //         that.popUp01 = 1;
-                  //     }
-                  // })
-
                   axiosGet('/index.php/shop/api/operationOrder',{
                       token:that.token,
                       u_id:that.u_id,
@@ -1617,12 +1616,12 @@
                           },function (res) {
                               console.log(res)
                               if(res.data.status == 0){
-                                  that.quanUse03 = true;
-                                  that.shop_type = 3;
+                                  that.quanUse = true;
+                                  that.shop_type = 2;
                                   that.subPage = 3;
                               }else if(res.data.status == 1){
-                                  that.quanUse03 = false;
-                                  that.shop_type = 3;
+                                  that.quanUse = false;
+                                  that.shop_type = 2;
                                   that.subPage = 3;
                               }
                           })
@@ -1731,17 +1730,25 @@
             // 超值购弹窗按钮
             btn01(){
                 const that = this;
-               // if(this.popUp01 == 4){
-               //     // this.popUp01 = 0;
-               //     // this.subPage = 2;
-               //     axiosPost('/index.php/shop/api/pays',{
-               //         token:that.token
-               //     },function (res) {
-               //         console.log(res)
-               //         that.popUp01 = 0;
-               //         that.subPage = 2;
-               //     })
-               // }
+               if(this.shop_type == 1 && this.subPage == 1){
+                   var msg00 = this.msg01;
+                   msg00.type = 'purchase';
+                   msg00.token = this.token;
+                   msg00.u_id = this.u_id;
+                   msg00.s_id = this.s_id.s_id_1;
+                   console.log(msg00);
+                   Post('/index.php/shop/api/dataForm',msg00,function (res) {
+                       console.log(res);
+                       if(res.status == 0&&res.msg == "您已存在该商品的订单，请勿重复提交订单"){
+                           that.popUp01 = 0;
+                           that.popCommon.status = true;
+                           that.popCommon.text = '您已有未付款订单，点击确定前往支付！';
+                       }else if(res.status == 1){
+                           that.orderId.orderId_1 = res.orderId;
+                           console.log(that.orderId.orderId_1)
+                       }
+                   })
+               }
                if(this.shop_type == 2&&this.subPage == 1){
                    var msg00 = this.msg01;
                    msg00.type = 'purchase';
@@ -1758,7 +1765,7 @@
                            that.popCommon.text = '您已有未付款订单，点击确定前往支付！';
                        }else if(res.status == 1){
                            that.orderId.orderId_2 = res.orderId;
-                           console.log(that.orderId.orderId_3)
+                           console.log(that.orderId.orderId_2)
                        }
                    })
                }
@@ -1790,18 +1797,22 @@
             // 超值购信息提交
             submit02(){
                 const that = this;
+                var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
                 if(this.msg01.name == ''){
                     this.popCommon01.status = 1;
-                    this.popCommon01.text = '姓名不能为空';
+                    this.popCommon01.text = '姓名不能为空!';
                 }else if(this.msg01.phone == ''){
                     this.popCommon01.status = 1;
-                    this.popCommon01.text = '手机号码不能为空';
+                    this.popCommon01.text = '手机号码不能为空!';
+                }else if(!myreg.test(this.msg01.phone)){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '手机号码格式错误！';
                 }else if(this.msg01.city == ''){
                     this.popCommon01.status = 1;
-                    this.popCommon01.text = '手机号码不能为空';
+                    this.popCommon01.text = '请选择城市';
                 }else if(this.msg01.address == ''){
                     this.popCommon01.status = 1;
-                    this.popCommon01.text = '具体地址不能为空';
+                    this.popCommon01.text = '具体地址不能为空!';
                 }else{
                     this.popUp01 = 4
                 }
@@ -1873,12 +1884,16 @@
             // 至尊购信息提交
             submit01(){
                const that = this;
+                var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
                if(this.msg01.name == ''){
                    this.popCommon.status = true;
                    this.popCommon.text = '用户名不能为空';
                }else if(this.msg01.phone == ''){
                    this.popCommon.status = true;
                    this.popCommon.text = '手机号不能为空';
+               }else if(!myreg.test(this.msg01.phone)){
+                   this.popCommon01.status = 1;
+                   this.popCommon01.text = '手机号码格式错误！';
                }else if(this.msg01.city == ''){
                    this.popCommon.status = true;
                    this.popCommon.text = '请选择城市';
@@ -1886,30 +1901,17 @@
                    this.popCommon.status = true;
                    this.popCommon.text = '请填写详细地址';
                }else{
-                   this.msg01.token = this.token;
-                   console.log(this.msg01)
-                   $.post(
-                       'https://haotaitai.hengdikeji.com/index.php/shop/api/dataForm',
-                       that.msg01,
-                       function (data) {
-                           console.log(data)
-                           if(data.status == 0){
-                               that.popCommon.status = true;
-                               that.popCommon.text = data.msg;
-                               that.token = data.token;
-                           }else{
-                               that.popCommon.status = true;
-                               that.popCommon.text = '发票申请成功';
-                               that.token = data.token;
-                               console.log(that.token);
-                           }
-                       }
-                   )
+                   this.popUp01 = 1;
                }
             },
             // 通用弹窗按钮
             button_1(){
                 const that = this;
+              if(this.shop_type == 1&&this.subPage == 1){
+                  alert(1)
+                  that.popCommon01.status = 0
+                  that.subPage = 2;
+              }
               if(this.shop_type == 3&&this.subPage == 1){
                   that.popCommon01.status = 0
               }
@@ -1919,6 +1921,7 @@
             useDY(){
                 const that = this;
                 // quanUse03 = true;popCommon.status = false
+                // 使用抵用券
                 if(this.subPage == 3 && this.shop_type == 3){
                     axiosGet('/index.php/shop/api/operationOrder',{
                         token:that.token,
@@ -1931,7 +1934,27 @@
                         that.popCommon.status = false
                     })
                 }
+                // 使用超值券
+                if(this.subPage == 3 && this.shop_type == 2){
+                    axiosGet('/index.php/shop/api/operationOrder',{
+                        token:that.token,
+                        u_id:that.u_id,
+                        s_id:that.s_id.s_id_2,
+                        type:'useCoupon'
+                    },function (res) {
+                        console.log(res);
+                        that.quanUse = true;
+                        that.popCommon.status = false
+                    })
+                }
+                // 换新购支付
                 if(this.shop_type == 3 && this.subPage == 1){
+                    alert(123);
+                    that.popCommon.status = false;
+                    that.subPage = 2
+                }
+                // 超值购支付
+                if(this.shop_type == 2 && this.subPage == 1){
                     alert(123);
                     that.popCommon.status = false;
                     that.subPage = 2

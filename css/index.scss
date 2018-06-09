@@ -286,9 +286,46 @@
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             box-sizing: border-box;
-            padding: 0.4rem;
+            padding: 0.4rem 0.4rem  0;
             .c1{
               margin-bottom: 0.5rem;
+              width: 100%;
+              height: 6.2rem;
+              overflow-y: scroll;
+              .ruleContent{
+                color: #0d57a3;
+                -webkit-overflow-scrolling: touch;
+                .rcTitle{
+                  font-size: 0.3rem;
+                  line-height: 0.5rem;
+                  font-weight: bold;
+                }
+                .rcDetails{
+                  font-size: 0.26rem;
+                  line-height: 0.42rem;
+                  text-align: justify;
+                  >div{
+                    width: 100%;
+                    p{
+                      padding: 0.15rem 0;
+                    }
+                  }
+                  >div::after{
+                    content: "";
+                    width: 100%;
+                    height: 1px;
+                    display: block;
+                    background: url("../img/dash.png") no-repeat left top;
+                    background-size: 100% 100%;
+                  }
+                  >div:nth-last-child(1)::after{
+                    display: none;
+                  }
+                  img{
+                    height: 1px;
+                  }
+                }
+              }
               p{
                 font-size: 0.28rem;
                 color: #0d57a3;
