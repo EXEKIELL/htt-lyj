@@ -754,6 +754,50 @@
                 </div>
             </div>
         </div>
+        <!--购买协议-->
+        <div class="popUp01" v-if="freePopStatus == 1">
+            <div>
+                <div class="wrap">
+                    <div class="wrap-1">
+                        <img src="img/bj12_1.png" alt="">
+                        <div class="close">
+                            <img src="img/close01.png" alt="" class="img" @click="freePopStatus = -1">
+                        </div>
+                        <div class="title01">
+                            <img src="img/popTitle05.png" alt="">
+                        </div>
+                    </div>
+                    <div class="wrap-2">
+                        <div class="c1">
+                            <div class="ruleContent">
+                                <div class="rcBox" v-for="(items,index) in rules[3]">
+                                    <div class="rcTitle">
+                                        <p>{{items.title}}</p>
+                                    </div>
+                                    <div class="rcDetails">
+                                        <div v-for="(its,i) in items.content">
+                                            <p>{{its}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="c2" @click="freeAgree = !freeAgree">
+                            <div class="select01" :class="{select01_sel:freeAgree}"></div>
+                            <div class="select01-cont">
+                                <p>点击确定购买并付款即视为您已同意并了解以上条款，并已清楚了解活动规则。</p>
+                            </div>
+                        </div>
+                        <div class="button08" style="width: 65%;" v-if="freeAgree">
+                            <img src="img/button10.png" alt="" class="img" @click="btn01">
+                        </div>
+                    </div>
+                    <div class="wrap-3">
+                        <img src="img/bj12-3.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--页面-->
         <!--内页首页-->
         <div class="i-1" v-if="freeIndex == 0">
@@ -764,7 +808,7 @@
                 </div>
                 <div class="list2Mottom winFlex" id="list2Mottom">
                     <div class="zhiyin move01"><img src="img/img01.png" alt=""></div>
-                    <div class="button07"><img src="img/free04.png" alt="" class="img" @click="freeBook"></div>
+                    <div class="button07"><img src="img/button12.png" alt="" class="img" @click="freeBook"></div>
                 </div>
                 <div class="list2Bottom">
                     <img src="img/free02.png"/>
@@ -779,17 +823,17 @@
                  <img src="img/freeAddressBack.png"/>
                 <div class="freeFrom">
                     <!--<form>-->
-                        <input type="text" class="finput1" placeholder="请输入您姓名"/>
-                        <input type="text" class="finput2" placeholder="请输入11位手机号码"/>
-                        <input type="text" id="freeCity" class="finput3" placeholder="请选择"/>
-                        <textarea placeholder="请输具体的街道地址" class="ftext1"></textarea>
-                        <input type="text" class="finput5" placeholder="请输入原品牌"/>
-                        <input type="text" class="finput6" placeholder="请输入型号"/>
-                        <input type="text" class="finput7" placeholder="请输入型号" :value="yearLimit" disabled/>
+                        <input type="text" class="finput1" placeholder="请输入您姓名" v-model="freeSubmitArr.name" />
+                        <input type="text" class="finput2" placeholder="请输入11位手机号码" v-model="freeSubmitArr.phone"  />
+                        <input type="text" id="freeCity" class="finput3" placeholder="请选择" v-model="freeSubmitArr.city" />
+                        <textarea placeholder="请输具体的街道地址" class="ftext1"  v-model="freeSubmitArr.address" ></textarea>
+                        <input type="text" class="finput5" placeholder="请输入原品牌" v-model="freeSubmitArr.brand"  />
+                        <input type="text" class="finput6" placeholder="请输入型号" v-model="freeSubmitArr.model" />
+                        <input type="text" class="finput7" placeholder="请选择年限" :value="yearLimit" disabled  />
                         <select v-model="yearLimit">
                             <option v-for="(item,index) in 11">{{item+1}}年</option>
                         </select>
-                        <textarea placeholder="您还可以输入200个字" class="ftext2"></textarea>
+                        <textarea placeholder="您还可以输入200个字" class="ftext2" v-model="freeSubmitArr.problem"></textarea>
                         <div class="fImgUp">
                             <div v-for="(item,index) in fImgList">
                                 <div class="fdelImg" v-if="item.img!=''" @click="fdelImg(index)">
@@ -804,15 +848,191 @@
                             </div>
                         </div>
                         <div class="freeSubmit">
-                            <button></button>
+                            <button @click="fSubmit"></button>
                         </div>
                     <!--</form>-->
                 </div>
             </div>
         </div>
+        <!--提交成功-->
+        <div class="list3" v-if="freeIndex == 2">
+            <img src="img/free05.png" alt="">
+            <div class="buttton13">
+                <img src="img/button13.png" alt="" @click="freeIndex=0,shop_type=0">
+            </div>
+        </div>
+        <!--提交已申请-->
+        <div class="list4" v-if="freeIndex == 3">
+            <img src="img/free13.png" alt="" style="top: -1%;">
+            <div class="return" @click="shop_type=0">
+                <img src="img/return.png" alt="">
+            </div>
+            <div class="logo">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="buttons" style="width: 44%;" >
+                <div class="button">
+                    <img src="img/button13.png" alt=""  @click="shop_type=0">
+                </div>
+            </div>
+        </div>
+        <!--抢购成功-->
+        <div class="list4" v-if="freeIndex == 4">
+            <img src="img/free06.png" alt="">
+            <div class="return">
+                <img src="img/return.png" alt=""  @click="shop_type=0">
+            </div>
+            <div class="logo">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="button14">
+                <img src="img/free09.png" alt="">
+            </div>
+            <div class="buttons">
+                <div class="button">
+                    <img src="img/free08.png" alt=""  @click="newPhoto">
+                </div>
+                <div class="button">
+                    <img src="img/button16.png" alt=""  @click="freeIndex=7">
+                </div>
+                <div class="button">
+                    <img src="img/button17.png" alt=""  @click="freeIndex=8">
+                </div>
+            </div>
+        </div>
+        <!--抢购失败-->
+        <div class="list4" v-if="freeIndex == 5">
+            <img src="img/free10.png" alt="" style="top: -1%;">
+            <div class="return" @click="shop_type=0">
+                <img src="img/return.png" alt="">
+            </div>
+            <div class="logo">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="buttons" style="width: 44%;" >
+                <div class="button" @click="shop_type=0">
+                    <img src="img/button13.png" alt="">
+                </div>
+            </div>
+        </div>
+        <!--新机合影-->
+        <div class="compented compentedNew" v-if="freeIndex == 6">
+            <div class="return" ><img @click="freeIndex = 4" src="img/return.png" alt="" class="img"></div>
+            <div class="fLogo"><img src="img/logo01.png"/> </div>
+            <div class="compentedIn">
+                <img src="img/free11.png"/>
+                <div class="compentedFrom">
+                    <textarea placeholder="您还可以输入200个字"></textarea>
+                    <div class="fImgUp">
+                        <div v-for="(item,index) in freeNewComment.fncImg">
+                            <div class="fdelImg" v-if="item.img!=''" @click="fndelImg(index)">
+                                <img src="img/freeClose.png"/>
+                            </div>
+                            <div class="freeInput" v-if="item.img==''">
+                                <input   :id="'fileNew'+index" type="file" accept="image/*" capture="camera"/>
+                            </div>
+                            <div class="fImgBox" v-if="item.img!=''"  >
+                                <img :src="item.img" @click="showBImg(item.img)"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--开发票-->
+        <div class="i-2 i-2-1" v-if="freeIndex == 7">
+            <!--发票通用弹窗-->
+            <div class="popUp02" v-if="fpCommon.status">
+                <div>
+                    <div class="animated bounceIn">
+                        <img src="img/img11.png" alt="">
+                        <span>{{fpCommon.text}}</span>
+                        <div class="button_1" @click="fpCommon.status = false"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="freeIndex = 4"></div>
+            <div class="logo01">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="messageWrap">
+                <img src="img/bj06.png" alt="">
+                <div>
+                    <div class="mesTitle">
+                        <img src="img/title03.png" alt="">
+                    </div>
+                    <div class="mesList">
+                        <div>
+                            <div class="nav">
+                                <div class="nav01 nav01_sel" @click="sel01('nav01')"></div>
+                                <div class="nav02" @click="sel01('nav02')"></div>
+                            </div>
+                            <div class="cont02">
+                                <img src="img/bj15.png" alt="">
+                                <ul>
+                                    <li v-if="types == '企业发票'">
+                                        <span>发票类型：</span>
+                                        <div class="select02">
+                                            {{fpmessage01.invoice_type}}
+                                            <select name="fapiao" id="fapiao1" v-model="fpmessage01.invoice_type">
+                                                <option value="普通发票">普通发票</option>
+                                                <option value="专有发票">专有发票</option>
+                                            </select>
+                                        </div>
+                                    </li>
+                                    <li v-else>
+                                        <span>发票类型：</span><input type="text" v-model="fpmessage01.invoice_type" disabled>
+                                    </li>
+                                    <li>
+                                        <span>发票金额：</span><input type="text" v-model="fpmessage01.money" disabled>
+                                    </li>
+                                    <li>
+                                        <span>发票抬头：</span><input type="text" v-model="fpmessage01.rise" placeholder="请输入发票抬头">
+                                    </li>
+                                    <li v-if="types == '企业发票'">
+                                        <span>识别号：</span><input type="text" v-model="fpmessage01.code" placeholder="请在此填写纳税人识别号">
+                                    </li>
+                                    <li>
+                                        <span>电子邮箱：</span><input type="text" v-model="fpmessage01.mail" placeholder="用于向您发送电子发票">
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button07">
+                        <img src="img/button10.png" alt="" class="img" @click="fpbtn01">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--安装凭证码-->
+        <div class="i-2" v-if="freeIndex == 8">
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="freeIndex = 4"></div>
+            <div class="logo01" style="top: -5%;">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="messageWrap">
+                <img src="img/bj06.png" alt="">
+                <div>
+                    <div class="mesTitle">
+                        <img src="img/popTitle06.png" alt="">
+                    </div>
+                    <div class="mesList mesList01">
+                        <img src="img/free14.png" alt="">
+                        <div class="num">
+                            <span>3</span><span>6</span><span>9</span><span>8</span><span>7</span><span>7</span>
+                        </div>
+                    </div>
+                    <div class="button07" >
+                        <img src="img/button13.png" alt="" class="img" v-if="freeUse"  @click="shop_type = 0,freeUse = false">
+                        <img src="img/button18.png" alt="" class="img" v-else  @click="freeIndex = 9">
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--评价-->
-        <div class="compented" v-if="freeIndex == 2">
-            <div class="return" ><img @click="freeIndex = 0" src="img/return.png" alt="" class="img"></div>
+        <div class="compented" v-if="freeIndex == 9">
+            <div class="return" ><img  src="img/return.png" alt="" class="img" @click="freeIndex = 8"></div>
             <div class="fLogo"><img src="img/logo01.png"/> </div>
             <div class="compentedIn">
                 <img src="img/compent1.png"/>
@@ -839,6 +1059,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <!--提交成功-->
+        <div class="list3 subSuccess" v-if="freeIndex == 10">
+            <img src="img/free15.png" alt="">
+            <div class="buttton13">
+                <img src="img/button19.png" alt="" @click="freeLookCode">
             </div>
         </div>
     </div>
@@ -960,7 +1187,7 @@
             // 活动提醒
             reminded:false,
             //超值购弹窗
-            popUp01:0,//0:不显示任何弹窗
+            popUp01:1,//0:不显示任何弹窗
             // 超值购购买协议同意状态
             agrees:false,
             // 超值购券使用状态
@@ -1005,6 +1232,7 @@
             quanUse03:false,
 
             moneyData:'预定金99元',//申请退款金额
+            //首页规则---------------------------------------------------------------------------------
             //规则背景图
             ruleBack:['img/allrule1.png','img/allrule2.png','img/allrule3.png','img/allrule4.png'],
             ruleShow:false, //是否显示规则
@@ -1091,9 +1319,12 @@
                 ],
 
             ],
-            //免费购
-            freePopStatus:-1,//0规则弹窗
-            freeIndex:2, //免费页面显示
+            //首页规则---------------------------------------------------------------------------------
+            //免费购---------------------------------------------------------------------------------
+            freePopStatus:1,//0规则弹窗
+            //免费页面显示 0--首页 1--填写地址 2--提交成功 3--已申请页面 4--抢购成功 5--抢购失败 6--新机合影
+            //7--开发票 8--安装凭证码 9--评价 10--提交成功 11--
+            freeIndex:0,
             yearLimit:"",//年限
             fImgList:[{'img':''},{'img':''},{'img':''}],//图片数据
             //免费评价的数据
@@ -1101,9 +1332,35 @@
                 serve:-1,
                 produce:-1,
                 fcImg:[{'img':''},{'img':''},{'img':''}]
+            },
+            freeUse:false,
+            //免费新机评价
+            freeNewComment:{
+                txt:"",
+                fncImg:[{'img':''},{'img':''},{'img':''},{'img':''},{'img':''},{'img':''}],
+            },
+            //同意协议
+            freeAgree:true,
+            freeSubmitArr:{
+                key:'Free',
+                u_id:59938,
+                s_id:3333,
+                name:'',
+                phone:'',
+                city:'',
+                address:'',
+                brand:'',
+                model:'',
+                years:'',
+                problem:'',
+                photo:'',
+                type:'purchase',
+                token:''
             }
+            //免费购---------------------------------------------------------------------------------
         },
         methods:{
+            //免费购---------------------------------------------------------------------------------
             //关闭规则页面（免费购）
             closeRule(){
                 this.ruleShow = false;
@@ -1116,7 +1373,7 @@
             showBImg(src){
                 showBigImg(src);
             },
-            //删除图片
+            //删除图片 -- 旧机
             fdelImg(index){
                 var self = this;
                 this.fImgList[index].img = '';
@@ -1124,12 +1381,20 @@
                     upImg('file'+index,index,self.fImgList);
                 },500);
             },
-            //删除图片
+            //删除图片 -- 评价
             fcdelImg(index){
                 var self = this;
                 this.freeComment.fcImg[index].img = '';
                 setTimeout(function(){
                     upImg('fileCom'+index,index,self.freeComment.fcImg);
+                },500);
+            },
+            //删除图片--新机合影
+            fndelImg(index){
+                var self = this;
+                this.freeNewComment.fncImg[index].img = '';
+                setTimeout(function(){
+                    upImg('fileNew'+index,index,self.freeNewComment.fncImg);
                 },500);
             },
             //产片评价
@@ -1153,6 +1418,89 @@
                     }
                 },500);
             },
+            //提交地址
+            fSubmit(){
+                var self = this;
+                var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+                this.freeSubmitArr.years = this.yearLimit;
+                var arr = [];
+                for(var i=0; i<this.fImgList.length; i++)
+                {
+                    if(this.fImgList[i].img != '')
+                    {
+                        arr.push(this.fImgList[i].img);
+                    }
+                }
+                this.freeSubmitArr.photo = JSON.stringify(arr);
+                if(this.freeSubmitArr.name == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '姓名不能为空！';
+                }else if(this.freeSubmitArr.phone == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '手机号码不能为空！';
+                }else if(!myreg.test(this.freeSubmitArr.phone)){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '手机号码格式错误！';
+                }else if(this.freeSubmitArr.city == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '城市不能为空！';
+                }else if(this.freeSubmitArr.address == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '具体地址不能为空！';
+                }else if(this.freeSubmitArr.brand == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '产品品牌不能为空！';
+                }else if(this.freeSubmitArr.model == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '产品型号不能为空！';
+                }else if(this.freeSubmitArr.years == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '产品年限不能为空！';
+                }else if(this.freeSubmitArr.problem == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '问题不能为空';
+                }else if(this.freeSubmitArr.photo == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '旧产品图片不能为空';
+                }else{
+                    $.post(
+                        'https://haotaitai.hengdikeji.com/index.php/shop/api/dataForm',
+                        self.freeSubmitArr,
+                        function (data) {
+                            if(data.status == 0){
+                                self.popCommon01.status = 1;
+                                self.popCommon01.text = data.msg;
+                                self.token = data.token;
+                            }else{
+                                self.token = data.token;
+                                self.freeIndex = 2;
+                            }
+                        },
+                        'json'
+                    )
+
+                }
+
+            },
+            //新机合影
+            newPhoto(){
+                var self = this;
+                this.freeIndex = 6;
+                setTimeout(function(){
+                    for(var i=0; i<self.freeNewComment.fncImg.length; i++)
+                    {
+                        upImg('fileNew'+i,i,self.freeNewComment.fncImg)
+
+                    }
+                },500);
+            },
+            //查看凭证码
+            freeLookCode(){
+                var self = this;
+                this.freeIndex = 8;
+                this.freeUse = true;
+            },
+            //免费购---------------------------------------------------------------------------------
            // 首页方法：
            btn(index){
                 const that = this;
@@ -1173,6 +1521,15 @@
                   this.shop_type = 3
               }else if(index == 3){
                   var self = this;
+                  $.get('https://haotaitai.hengdikeji.com/index.php/shop/api/operationOrder',
+                      {
+                          type:'Existence',
+                          u_id:59938,
+                          s_id:3333
+                      }
+                      ,function(data){
+                      console.log(data);
+                  },'json');
                   this.shop_type = 4
                   this.freePopStatus = 0;
                   //设置首页中心高度
@@ -1405,6 +1762,7 @@
 
                 $target.on('done.ydui.cityselect', function (ret) {
                     $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+                    that.freeSubmitArr.city = ret.provance + '市 ' + ret.city + ' ' + ret.area;
                 });
             }();
             // 至尊购选择省市区
