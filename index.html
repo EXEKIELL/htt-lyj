@@ -86,6 +86,29 @@
     <!--至尊购-->
     <div id="index_1" v-if="status == 1 && shop_type == 1">
         <!--弹窗-->
+        <!--活动规则页面-->
+        <div class="freePop01 winFlex" v-if="popUp01 == 6">
+            <div class="ruleBox animated bounceInDown">
+                <img src="img/freeRule.png"/>
+                <div class="ruleBoxIn">
+                    <div class="clearRules">
+                        <button @click="popUp01 = 0"></button>
+                    </div>
+                    <div class="ruleContent">
+                        <div class="rcBox" v-for="(items,index) in rules[0]">
+                            <div class="rcTitle">
+                                <p>{{items.title}}</p>
+                            </div>
+                            <div class="rcDetails">
+                                <div v-for="(its,i) in items.content">
+                                    <p>{{its}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--购买协议-->
         <div class="popUp01" v-if="popUp01 == 1">
             <div>
@@ -101,7 +124,18 @@
                     </div>
                     <div class="wrap-2">
                         <div class="c1">
-                            <img src="img/img06.png" alt="">
+                            <div class="ruleContent">
+                                <div class="rcBox" v-for="(items,index) in rules[0]">
+                                    <div class="rcTitle">
+                                        <p>{{items.title}}</p>
+                                    </div>
+                                    <div class="rcDetails">
+                                        <div v-for="(its,i) in items.content">
+                                            <p>{{its}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="c2" @click="agrees = !agrees">
                             <div class="select01" :class="{select01_sel:agrees}"></div>
@@ -1179,7 +1213,7 @@
             end:[],
             //状态控制
             status:1, //页面状态：0-加载页面、1-首页
-            shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
+            shop_type:1,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
             subPage:0,//内页流程步骤控制：
             aa:true,
             //加载页参数：
@@ -1205,7 +1239,7 @@
             // 活动提醒
             reminded:false,
             //超值购弹窗
-            popUp01:0,//0:不显示任何弹窗
+            popUp01:1,//0:不显示任何弹窗
             // 超值购购买协议同意状态
             agrees:false,
             // 超值购券使用状态
@@ -1339,7 +1373,7 @@
             ],
             //首页规则---------------------------------------------------------------------------------
             //免费购---------------------------------------------------------------------------------
-            freePopStatus:-1,//0规则弹窗
+            freePopStatus:1,//0规则弹窗
             //免费页面显示 0--首页 1--填写地址 2--提交成功 3--已申请页面 4--抢购成功 5--抢购失败
             //7--开发票 8--安装凭证码 9--评价 10--提交成功
             freeIndex:0,
