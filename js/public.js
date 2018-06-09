@@ -36,3 +36,62 @@ function music(){
         }
     });
 }
+var baseUrl = 'https://haotaitai.hengdikeji.com';
+//post请求
+function Post(url, data, fun) {
+    $.post(
+        baseUrl+url,
+        data,
+        function (data) {
+            if(typeof fun == 'function'){
+                fun(data)
+            }
+        }
+    )
+}
+//get请求
+function Get(url, data, fun) {
+    $.get(
+        baseUrl+url,
+        data,
+        function (data) {
+            if(typeof fun == 'function'){
+                fun(data)
+            }
+        }
+    )
+}
+//axios get请求
+function axiosGet(url, params, fun) {
+    axios({
+        method:'get',
+        baseURL:baseUrl,
+        url:url,
+        params:params
+    }).then(res=>{
+        if (typeof fun == 'function') {
+            fun(res)
+        }
+    }).catch(error=>{
+        if(typeof fun == 'function') {
+            fun(error)
+        }
+    })
+}
+//axios post请求
+function axiosPost(url, data, fun) {
+    axios({
+        method:'post',
+        baseURL:baseUrl,
+        url:url,
+        data:data
+    }).then(res=>{
+        if(typeof fun == 'function') {
+            fun(res);
+        }
+    }).catch(error=>{
+        if(typeof fun == 'function') {
+            fun(error)
+        }
+    })
+}
