@@ -46,7 +46,8 @@ function Post(url, data, fun) {
             if(typeof fun == 'function'){
                 fun(data)
             }
-        }
+        },
+        'json'
     )
 }
 //get请求
@@ -58,7 +59,9 @@ function Get(url, data, fun) {
             if(typeof fun == 'function'){
                 fun(data)
             }
-        }
+        },
+        'json'
+
     )
 }
 //axios get请求
@@ -84,6 +87,7 @@ function axiosPost(url, data, fun) {
         method:'post',
         baseURL:baseUrl,
         url:url,
+        header:'application/json',
         data:data
     }).then(res=>{
         if(typeof fun == 'function') {
