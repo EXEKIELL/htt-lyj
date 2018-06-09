@@ -1654,6 +1654,25 @@
                        that.subPage = 2;
                    })
                }
+               if(this.shop_type == 3&&this.subPage == 1){
+                   var msg00 = this.msg01;
+                   msg00.type = 'purchase';
+                   msg00.token = this.token;
+                   msg00.u_id = this.u_id;
+                   msg00.s_id = this.s_id.s_id_3;
+                   console.log(msg00);
+                   this.popUp01 = 4
+                   Post('/index.php/shop/api/dataForm',msg00,function (res) {
+                       console.log(res);
+                       if(res.status == 0&&res.msg == "您已存在该商品的订单，请勿重复提交订单"){
+                           that.popCommon.status = true;
+                           that.popCommon.text = '您已有未付款订单，点击确定前往支付！';
+                       }else if(res.status == 1){
+                           that.orderId.orderId_3 = res.orderId;
+                           console.log(that.orderId.orderId_3)
+                       }
+                   })
+               }
             },
             // 超值购购买协议活动规则跳转
             navTo(){
@@ -1675,23 +1694,7 @@
                     this.popCommon01.status = 1;
                     this.popCommon01.text = '具体地址不能为空';
                 }else{
-                    var msg00 = this.msg01;
-                    msg00.type = 'purchase';
-                    msg00.token = this.token;
-                    msg00.u_id = this.u_id;
-                    msg00.s_id = this.s_id.s_id_3;
-                    console.log(msg00);
-                    // this.popUp01 = 4
-                    Post('/index.php/shop/api/dataForm',msg00,function (res) {
-                        console.log(res);
-                        if(res.status == 0&&res.msg == "您已存在该商品的订单，请勿重复提交订单"){
-                            that.popCommon.status = true;
-                            that.popCommon.text = '您已有未付款订单，点击确定前往支付！';
-                        }else if(res.status == 1){
-                            that.orderId.orderId_3 = res.orderId;
-                            console.log(that.orderId.orderId_3)
-                        }
-                    })
+                    this.popUp01 = 4
                 }
             },
             // 至尊购开发票tab切换s

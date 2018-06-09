@@ -65,7 +65,7 @@
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="353">
-              <caret line="1682" column="39" lean-forward="true" selection-start-line="1682" selection-start-column="39" selection-end-line="1682" selection-end-column="39" />
+              <caret line="1696" column="36" selection-start-line="1696" selection-start-column="36" selection-end-line="1696" selection-end-column="36" />
               <folding>
                 <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
@@ -142,10 +142,10 @@
       <find>product</find>
       <find>s_id</find>
       <find>btn(index)</find>
-      <find>btn01</find>
       <find>msg01</find>
       <find>useDY</find>
       <find>submit02</find>
+      <find>btn01</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -217,12 +217,12 @@
       <workItem from="1528351398953" duration="29294000" />
       <workItem from="1528416425878" duration="7644000" />
       <workItem from="1528424834835" duration="30117000" />
-      <workItem from="1528505209548" duration="21817000" />
+      <workItem from="1528505209548" duration="22139000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95697000" />
+    <option name="totallyTimeSpent" value="96019000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="834" y="34" width="1069" height="994" extended-state="0" />
@@ -687,7 +687,7 @@
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="353">
-          <caret line="1682" column="39" lean-forward="true" selection-start-line="1682" selection-start-column="39" selection-end-line="1682" selection-end-column="39" />
+          <caret line="1696" column="36" selection-start-line="1696" selection-start-column="36" selection-end-line="1696" selection-end-column="36" />
           <folding>
             <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
