@@ -515,7 +515,7 @@
         </div>
         <!--填写信息-->
         <div class="i-2" v-if="subPage == 1">
-            <div class="return"><img src="img/return.png" alt="" class="img" @click="subPage = 0"></div>
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="shop_type = 0"></div>
             <div class="logo01">
                 <img src="img/logo01.png" alt="">
             </div>
@@ -695,7 +695,7 @@
         </div>
         <!--填写信息-->
         <div class="i-2" v-if="subPage == 1">
-            <div class="return"><img src="img/return.png" alt="" class="img" @click="subPage = 0"></div>
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="shop_type = 0"></div>
             <div class="logo01">
                 <img src="img/logo01.png" alt="">
             </div>
@@ -1179,8 +1179,8 @@
             end:[],
             //状态控制
             status:1, //页面状态：0-加载页面、1-首页
-            shop_type:4,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
-            subPage:8,//内页流程步骤控制：
+            shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
+            subPage:0,//内页流程步骤控制：
             aa:true,
             //加载页参数：
             num01:'0%',
@@ -1341,7 +1341,7 @@
             //免费购---------------------------------------------------------------------------------
             freePopStatus:-1,//0规则弹窗
             //免费页面显示 0--首页 1--填写地址 2--提交成功 3--已申请页面 4--抢购成功 5--抢购失败
-            //7--开发票 8--安装凭证码 9--评价 10--提交成功 11--
+            //7--开发票 8--安装凭证码 9--评价 10--提交成功
             freeIndex:0,
             yearLimit:"",//年限
             fImgList:[{'img':''},{'img':''},{'img':''}],//图片数据
@@ -1357,8 +1357,8 @@
             freeAgree:true,
             freeSubmitArr:{
                 key:'Free',
-                u_id:59938,
-                s_id:3333,
+                u_id:'',
+                s_id:'',
                 name:'',
                 phone:'',
                 city:'',
@@ -1413,14 +1413,18 @@
                     upImg('fileCom'+index,index,self.freeComment.fcImg);
                 },500);
             },
-            //新机评价
-            newProC(){
+            resetComment(){
                 var self = this;
-                self.freeIndex = 9;
                 self.freeComment.serve = -1;
                 self.freeComment.produce = -1;
                 self.freeComment.fcImg = [{'img':''},{'img':''},{'img':''}];
                 self.freeComment.txt = '';
+            },
+            //新机评价
+            newProC(){
+                var self = this;
+                self.freeIndex = 9;
+                resetComment();
                 setTimeout(function(){
                     for(var i=0; i<self.freeComment.fcImg.length; i++)
                     {
@@ -1479,7 +1483,7 @@
                 }else{
                     var updata = {
                         key:'Free',
-                        o_id:6,
+                        o_id:2147483647,
                         evaluate:(self.freeComment.produce+1)+','+(self.freeComment.serve+1),
                         comment:self.freeComment.txt,
                         photo:photos,
@@ -1550,6 +1554,8 @@
                     this.popCommon01.status = 1;
                     this.popCommon01.text = '旧产品图片不能为空';
                 }else{
+                    self.freeSubmitArr.u_id = self.u_id;
+                    self.freeSubmitArr.s_id = self.s_id.s_id_4;
                     Post(
                         '/index.php/shop/api/dataForm',
                         self.freeSubmitArr,
@@ -1594,6 +1600,22 @@
               }else if(index == 1){ //超值购
                   // this.shop_type = 2;
                   // this.popUp01 = 1;
+                  // axiosGet('/index.php/shop/api/operationOrder',{
+                  //     token:that.token,
+                  //     u_id:that.u_id,
+                  //     s_id:that.s_id.s_id_2,
+                  //     type:'existence'
+                  // },function (res) {
+                  //     console.log(res)
+                  //     if(res.data.status == 0){
+                  //         that.shop_type = 2;
+                  //         that.subPage = 3;
+                  //     }else if(res.data.status == 1){
+                  //         that.shop_type = 2;
+                  //         that.popUp01 = 1;
+                  //     }
+                  // })
+
                   axiosGet('/index.php/shop/api/operationOrder',{
                       token:that.token,
                       u_id:that.u_id,
@@ -1601,12 +1623,34 @@
                       type:'existence'
                   },function (res) {
                       console.log(res)
+                      // that.shop_type = 3;
+                      // that.subPage = 3;
                       if(res.data.status == 0){
-                          that.shop_type = 2;
-                          that.subPage = 3;
+                          axiosGet('/index.php/shop/api/operationOrder',{
+                              token:that.token,
+                              u_id:that.u_id,
+                              s_id:that.s_id.s_id_2,
+                              type:'isUseCoupon'
+                          },function (res) {
+                              console.log(res)
+                              if(res.data.status == 0){
+                                  that.quanUse03 = true;
+                                  that.shop_type = 3;
+                                  that.subPage = 3;
+                              }else if(res.data.status == 1){
+                                  that.quanUse03 = false;
+                                  that.shop_type = 3;
+                                  that.subPage = 3;
+                              }
+                          })
                       }else if(res.data.status == 1){
                           that.shop_type = 2;
                           that.popUp01 = 1;
+                      }else if(res.data.status == 2){
+                          that.shop_type = 2;
+                          that.subPage = 1;
+                          that.popCommon.status = true;
+                          that.popCommon.text = '您有未付款订单，点击确定前往支付！'
                       }
                   })
               }else if(index == 2){ //换新购
@@ -1647,20 +1691,13 @@
                           that.popCommon.status = true;
                           that.popCommon.text = '您有未付款订单，点击确定前往支付！'
                       }
+
+
+                      //sdffdfsdfsd
                   })
               }else if(index == 3){ //免费购
                   var self = this;
-                  Get('/index.php/shop/api/operationOrder',
-                      {
-                          type:'robShoping',
-                          u_id:59938,
-                          s_id:3333
-                      }
-                      ,function(data){
-                          console.log(data);
-                  },'json');
-                  this.shop_type = 4
-                  this.freePopStatus = 0;
+
                   //设置首页中心高度
                   var hTween = setTimeout(function(){
                       var h1 = $('#index_4 .i-1 .list2 .list2Top img').height();
@@ -1670,6 +1707,71 @@
                   },100);
 
                   //免费购
+                  axiosGet('/index.php/shop/api/operationOrder',{
+                      token:that.token,
+                      u_id:that.u_id,
+                      s_id:that.s_id.s_id_4,
+                      type:'existence'
+                  },function (res) {
+                      if(res.data.status == 1)
+                      {
+                          self.shop_type = 4
+                          self.freePopStatus = 0;
+                          self.freeIndex = 0;
+                      }else if(res.data.status==2) {
+                          axiosGet('/index.php/shop/api/operationOrder', {
+                              token: that.token,
+                              u_id: that.u_id,
+                              s_id: that.s_id.s_id_4,
+                              type: 'robShoping'
+                          }, function (res) {
+                              console.log(res)
+                              // if(res.data.status == 0){
+                              //     that.quanUse03 = true;
+                              //     that.shop_type = 3;
+                              //     that.subPage = 3;
+                              // }else if(res.data.status == 1){
+                              //     that.quanUse03 = false;
+                              //     that.shop_type = 3;
+                              //     that.subPage = 3;
+                              // }
+                          })
+                      }else if(res.data.status == 0)
+                      {
+                          self.shop_type = 4
+                          self.freeIndex = 4;
+                      }
+                      // console.log(res)
+                      // // that.shop_type = 3;
+                      // // that.subPage = 3;
+                      // if(res.data.status == 0){
+                      //     axiosGet('/index.php/shop/api/operationOrder',{
+                      //         token:that.token,
+                      //         u_id:that.u_id,
+                      //         s_id:that.s_id.s_id_4,
+                      //         type:'isUseCoupon'
+                      //     },function (res) {
+                      //         console.log(res)
+                      //         if(res.data.status == 0){
+                      //             that.quanUse03 = true;
+                      //             that.shop_type = 3;
+                      //             that.subPage = 3;
+                      //         }else if(res.data.status == 1){
+                      //             that.quanUse03 = false;
+                      //             that.shop_type = 3;
+                      //             that.subPage = 3;
+                      //         }
+                      //     })
+                      // }else if(res.data.status == 1){
+                      //     that.shop_type = 2;
+                      //     that.popUp01 = 1;
+                      // }else if(res.data.status == 2){
+                      //     that.shop_type = 2;
+                      //     that.subPage = 1;
+                      //     that.popCommon.status = true;
+                      //     that.popCommon.text = '您有未付款订单，点击确定前往支付！'
+                      // }
+                  })
 
               }else{
                   this.ruleShow = true;
@@ -1701,15 +1803,35 @@
             // 超值购弹窗按钮
             btn01(){
                 const that = this;
-               if(this.popUp01 == 4){
-                   // this.popUp01 = 0;
-                   // this.subPage = 2;
-                   axiosPost('/index.php/shop/api/pays',{
-                       token:that.token
-                   },function (res) {
-                       console.log(res)
-                       that.popUp01 = 0;
-                       that.subPage = 2;
+               // if(this.popUp01 == 4){
+               //     // this.popUp01 = 0;
+               //     // this.subPage = 2;
+               //     axiosPost('/index.php/shop/api/pays',{
+               //         token:that.token
+               //     },function (res) {
+               //         console.log(res)
+               //         that.popUp01 = 0;
+               //         that.subPage = 2;
+               //     })
+               // }
+               if(this.shop_type == 2&&this.subPage == 1){
+                   var msg00 = this.msg01;
+                   msg00.type = 'purchase';
+                   msg00.token = this.token;
+                   msg00.u_id = this.u_id;
+                   msg00.s_id = this.s_id.s_id_2;
+                   console.log(msg00);
+                   this.popUp01 = 4
+                   Post('/index.php/shop/api/dataForm',msg00,function (res) {
+                       console.log(res);
+                       if(res.status == 0&&res.msg == "您已存在该商品的订单，请勿重复提交订单"){
+                           that.popUp01 = 0;
+                           that.popCommon.status = true;
+                           that.popCommon.text = '您已有未付款订单，点击确定前往支付！';
+                       }else if(res.status == 1){
+                           that.orderId.orderId_2 = res.orderId;
+                           console.log(that.orderId.orderId_3)
+                       }
                    })
                }
                if(this.shop_type == 3&&this.subPage == 1){
@@ -1723,6 +1845,7 @@
                    Post('/index.php/shop/api/dataForm',msg00,function (res) {
                        console.log(res);
                        if(res.status == 0&&res.msg == "您已存在该商品的订单，请勿重复提交订单"){
+                           that.popUp01 = 0;
                            that.popCommon.status = true;
                            that.popCommon.text = '您已有未付款订单，点击确定前往支付！';
                        }else if(res.status == 1){
