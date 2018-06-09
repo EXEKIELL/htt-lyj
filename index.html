@@ -350,6 +350,37 @@
                 </div>
             </div>
         </div>
+        <!--评价-->
+        <div class="compented" v-if="subPage == 8">
+            <div class="return" ><img  src="img/return.png" alt="" class="img" @click="freeIndex = 8"></div>
+            <div class="fLogo"><img src="img/logo01.png"/> </div>
+            <div class="compentedIn">
+                <img src="img/compent1.png"/>
+
+                <div class="compentedFrom">
+                    <div class="serveCmm proCmm">
+                        <div v-for="(items,index) in 5" :class="{hasStar:index<=freeComment.produce}" @click="fproCmm(index)"></div>
+                    </div>
+                    <div class="serveCmm">
+                        <div v-for="(items,index) in 5" :class="{hasStar:index<=freeComment.serve}" @click="fserCmm(index)"></div>
+                    </div>
+                    <textarea placeholder="您还可以输入200个字"></textarea>
+                    <div class="fImgUp">
+                        <div v-for="(item,index) in freeComment.fcImg">
+                            <div class="fdelImg" v-if="item.img!=''" @click="fcdelImg(index)">
+                                <img src="img/freeClose.png"/>
+                            </div>
+                            <div class="freeInput" v-if="item.img==''">
+                                <input   :id="'fileCom'+index" type="file" accept="image/*" capture="camera"/>
+                            </div>
+                            <div class="fImgBox" v-if="item.img!=''"  >
+                                <img :src="item.img" @click="showBImg(item.img)"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!--超值购-->
     <div id="index_2" v-if="status == 1 && shop_type == 2">
@@ -890,7 +921,7 @@
             </div>
             <div class="buttons">
                 <div class="button">
-                    <img src="img/free08.png" alt=""  @click="newPhoto">
+                    <img src="img/free08.png" alt=""  @click="newProC">
                 </div>
                 <div class="button">
                     <img src="img/button16.png" alt=""  @click="freeIndex=7">
@@ -916,29 +947,7 @@
             </div>
         </div>
         <!--新机合影-->
-        <div class="compented compentedNew" v-if="freeIndex == 6">
-            <div class="return" ><img @click="freeIndex = 4" src="img/return.png" alt="" class="img"></div>
-            <div class="fLogo"><img src="img/logo01.png"/> </div>
-            <div class="compentedIn">
-                <img src="img/free11.png"/>
-                <div class="compentedFrom">
-                    <textarea placeholder="您还可以输入200个字"></textarea>
-                    <div class="fImgUp">
-                        <div v-for="(item,index) in freeNewComment.fncImg">
-                            <div class="fdelImg" v-if="item.img!=''" @click="fndelImg(index)">
-                                <img src="img/freeClose.png"/>
-                            </div>
-                            <div class="freeInput" v-if="item.img==''">
-                                <input   :id="'fileNew'+index" type="file" accept="image/*" capture="camera"/>
-                            </div>
-                            <div class="fImgBox" v-if="item.img!=''"  >
-                                <img :src="item.img" @click="showBImg(item.img)"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <!--开发票-->
         <div class="i-2 i-2-1" v-if="freeIndex == 7">
             <!--发票通用弹窗-->
@@ -1025,7 +1034,7 @@
                     </div>
                     <div class="button07" >
                         <img src="img/button13.png" alt="" class="img" v-if="freeUse"  @click="shop_type = 0,freeUse = false">
-                        <img src="img/button18.png" alt="" class="img" v-else  @click="freeIndex = 9">
+                        <img src="img/button18.png" alt="" class="img" v-else  @click="newProC">
                     </div>
                 </div>
             </div>
@@ -1036,7 +1045,6 @@
             <div class="fLogo"><img src="img/logo01.png"/> </div>
             <div class="compentedIn">
                 <img src="img/compent1.png"/>
-
                 <div class="compentedFrom">
                     <div class="serveCmm proCmm">
                         <div v-for="(items,index) in 5" :class="{hasStar:index<=freeComment.produce}" @click="fproCmm(index)"></div>
@@ -1044,7 +1052,7 @@
                     <div class="serveCmm">
                         <div v-for="(items,index) in 5" :class="{hasStar:index<=freeComment.serve}" @click="fserCmm(index)"></div>
                     </div>
-                    <textarea placeholder="您还可以输入200个字"></textarea>
+                    <textarea placeholder="您还可以输入200个字" v-model="freeComment.txt"></textarea>
                     <div class="fImgUp">
                         <div v-for="(item,index) in freeComment.fcImg">
                             <div class="fdelImg" v-if="item.img!=''" @click="fcdelImg(index)">
@@ -1059,6 +1067,7 @@
                         </div>
                     </div>
                 </div>
+                <button @click="freecSubmit"></button>
             </div>
         </div>
         <!--提交成功-->
@@ -1170,8 +1179,8 @@
             end:[],
             //状态控制
             status:1, //页面状态：0-加载页面、1-首页
-            shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
-            subPage:0,//内页流程步骤控制：
+            shop_type:4,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
+            subPage:8,//内页流程步骤控制：
             aa:true,
             //加载页参数：
             num01:'0%',
@@ -1330,24 +1339,20 @@
             ],
             //首页规则---------------------------------------------------------------------------------
             //免费购---------------------------------------------------------------------------------
-            freePopStatus:1,//0规则弹窗
-            //免费页面显示 0--首页 1--填写地址 2--提交成功 3--已申请页面 4--抢购成功 5--抢购失败 6--新机合影
+            freePopStatus:-1,//0规则弹窗
+            //免费页面显示 0--首页 1--填写地址 2--提交成功 3--已申请页面 4--抢购成功 5--抢购失败
             //7--开发票 8--安装凭证码 9--评价 10--提交成功 11--
-            freeIndex:0,
+            freeIndex:4,
             yearLimit:"",//年限
             fImgList:[{'img':''},{'img':''},{'img':''}],//图片数据
             //免费评价的数据
             freeComment:{
                 serve:-1,
                 produce:-1,
-                fcImg:[{'img':''},{'img':''},{'img':''}]
+                fcImg:[{'img':''},{'img':''},{'img':''}],
+                txt:''
             },
             freeUse:false,
-            //免费新机评价
-            freeNewComment:{
-                txt:"",
-                fncImg:[{'img':''},{'img':''},{'img':''},{'img':''},{'img':''},{'img':''}],
-            },
             //同意协议
             freeAgree:true,
             freeSubmitArr:{
@@ -1405,12 +1410,20 @@
                     upImg('fileCom'+index,index,self.freeComment.fcImg);
                 },500);
             },
-            //删除图片--新机合影
-            fndelImg(index){
+            //新机评价
+            newProC(){
                 var self = this;
-                this.freeNewComment.fncImg[index].img = '';
+                self.freeIndex = 9;
+                self.freeComment.serve = -1;
+                self.freeComment.produce = -1;
+                self.freeComment.fcImg = [{'img':''},{'img':''},{'img':''}];
+                self.freeComment.txt = '';
                 setTimeout(function(){
-                    upImg('fileNew'+index,index,self.freeNewComment.fncImg);
+                    for(var i=0; i<self.freeComment.fcImg.length; i++)
+                    {
+                        upImg('fileCom'+i,i,self.freeComment.fcImg)
+
+                    }
                 },500);
             },
             //产片评价
@@ -1433,6 +1446,53 @@
 
                     }
                 },500);
+            },
+            //新机合影提交（免费购）
+            freecSubmit(){
+                var self = this;
+
+                var arr = [];
+                for(var i=0; i<this.freeComment.fcImg.length; i++)
+                {
+                    if(this.freeComment.fcImg[i].img != '')
+                    {
+                        arr.push(this.freeComment.fcImg[i].img);
+                    }
+                }
+                var photos = JSON.stringify(arr);
+                if(this.freeComment.produce<0)
+                {
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '请给产品评价！';
+                }else if(this.freeComment.serve<0){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '请给服务评价！';
+                }else if(photos.length == 2){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '至少上传一张图片！';
+                }else if(this.freeComment.txt == ''){
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '内容不能为空！';
+                }else{
+                    var updata = {
+                        key:'Free',
+                        o_id:4,
+                        evaluate:self.freeComment.produce+','+self.freeComment.serve,
+                        comment:self.freeComment.txt,
+                        photo:photos,
+                        type : 'FreeEvaluate',
+                        token:''
+                    }
+                    Post(
+                        '/index.php/shop/api/dataForm',
+                        updata,
+                        function (data) {
+                            console.log(data);
+                        }
+                    )
+                }
+
+
             },
             //提交地址
             fSubmit(){
@@ -1479,8 +1539,8 @@
                     this.popCommon01.status = 1;
                     this.popCommon01.text = '旧产品图片不能为空';
                 }else{
-                    $.post(
-                        'https://haotaitai.hengdikeji.com/index.php/shop/api/dataForm',
+                    Post(
+                        '/index.php/shop/api/dataForm',
                         self.freeSubmitArr,
                         function (data) {
                             if(data.status == 0){
@@ -1491,24 +1551,11 @@
                                 self.token = data.token;
                                 self.freeIndex = 2;
                             }
-                        },
-                        'json'
+                        }
                     )
 
                 }
 
-            },
-            //新机合影
-            newPhoto(){
-                var self = this;
-                this.freeIndex = 6;
-                setTimeout(function(){
-                    for(var i=0; i<self.freeNewComment.fncImg.length; i++)
-                    {
-                        upImg('fileNew'+i,i,self.freeNewComment.fncImg)
-
-                    }
-                },500);
             },
             //查看凭证码
             freeLookCode(){
@@ -1592,14 +1639,14 @@
                   })
               }else if(index == 3){ //免费购
                   var self = this;
-                  $.get('https://haotaitai.hengdikeji.com/index.php/shop/api/operationOrder',
+                  Get('/index.php/shop/api/operationOrder',
                       {
-                          type:'Existence',
+                          type:'robShoping',
                           u_id:59938,
                           s_id:3333
                       }
                       ,function(data){
-                      console.log(data);
+                          console.log(data);
                   },'json');
                   this.shop_type = 4
                   this.freePopStatus = 0;
@@ -1978,13 +2025,7 @@
                 load(imgList,that)
             },100);
 
-            // setTimeout(function(){
-            //     for(var i=0; i<that.freeComment.fcImg.length; i++)
-            //     {
-            //         upImg('fileCom'+i,i,that.freeComment.fcImg)
-            //
-            //     }
-            // },500);
+
         }
     })
 </script>

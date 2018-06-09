@@ -431,6 +431,15 @@
     width: 88%;
     margin: 0 auto ;
     position: relative;
+    button{
+      position: absolute;
+      left: 26%;
+      bottom: 4%;
+      width: 48%;
+      height: 7%;
+      display: block;
+      opacity: 1;
+    }
   }
   .compentedFrom{
     position: absolute;
@@ -438,6 +447,15 @@
     height: 100%!important;
     top: 0;
     left: 0;
+    button{
+      position: absolute;
+      left: 26%;
+      bottom: 4%;
+      width: 48%;
+      height: 7%;
+      display: block;
+      opacity: 0;
+    }
     textarea{
       position: absolute;
       top: 56.8%;
@@ -555,25 +573,6 @@
   }
   .proCmm{
     top: 16%;
-  }
-}
-.compentedNew{
-  .fImgUp {
-    width: 81.4%;
-    height: 16.2%;
-    position: absolute;
-    left: 9.6%;
-    top: 16%;
-    display: -webkit-flex;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .compentedFrom textarea{
-    top: 56.2%;
-  }
-  .fImgUp>div:nth-child(3n){
-    margin-right: 0;
-    margin-bottom: 2.5%;
   }
 }
 #index_4{
