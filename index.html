@@ -1041,7 +1041,7 @@
         </div>
         <!--评价-->
         <div class="compented" v-if="freeIndex == 9">
-            <div class="return" ><img  src="img/return.png" alt="" class="img" @click="freeIndex = 8"></div>
+            <div class="return" ><img  src="img/return.png" alt="" class="img" @click="freeIndex = 4"></div>
             <div class="fLogo"><img src="img/logo01.png"/> </div>
             <div class="compentedIn">
                 <img src="img/compent1.png"/>
@@ -1342,7 +1342,7 @@
             freePopStatus:-1,//0规则弹窗
             //免费页面显示 0--首页 1--填写地址 2--提交成功 3--已申请页面 4--抢购成功 5--抢购失败
             //7--开发票 8--安装凭证码 9--评价 10--提交成功 11--
-            freeIndex:4,
+            freeIndex:0,
             yearLimit:"",//年限
             fImgList:[{'img':''},{'img':''},{'img':''}],//图片数据
             //免费评价的数据
@@ -1370,7 +1370,10 @@
                 photo:'',
                 type:'purchase',
                 token:''
-            }
+            },
+            //安装凭证码（免费购）
+            freeCode:'',
+            freeCodeList:[]
             //免费购---------------------------------------------------------------------------------
         },
         watch:{
@@ -1476,18 +1479,26 @@
                 }else{
                     var updata = {
                         key:'Free',
-                        o_id:4,
-                        evaluate:self.freeComment.produce+','+self.freeComment.serve,
+                        o_id:6,
+                        evaluate:(self.freeComment.produce+1)+','+(self.freeComment.serve+1),
                         comment:self.freeComment.txt,
                         photo:photos,
-                        type : 'FreeEvaluate',
-                        token:''
+                        type : 'Evaluate',
+                        token:self.token
                     }
                     Post(
                         '/index.php/shop/api/dataForm',
                         updata,
                         function (data) {
-                            console.log(data);
+                            if(data.status==0)
+                            {
+                                self.popCommon01.status = 1;
+                                self.popCommon01.text = data.msg;
+                            }else if(data.status==1){
+                                self.popCommon01.status = 1;
+                                self.popCommon01.text = "评价成功，感谢您的评价！";
+                            }
+
                         }
                     )
                 }
