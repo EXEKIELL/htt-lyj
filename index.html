@@ -563,8 +563,8 @@
                     <div class="title01">
                         <img src="img/popTitle01.png" alt="">
                     </div>
-                    <div class="cont01">
-                        <img src="img/cont01.png" alt="">
+                    <div class="cont01" style="width: 90%">
+                        <img src="img/img15.png" alt="">
                     </div>
                 </div>
             </div>
@@ -650,7 +650,7 @@
                     <span>{{popCommon.text}}</span>
                     <div class="buttons">
                         <div class="cancel" @click="popCommon.status = false"></div>
-                        <div class="sure" @click="quanUse03 = true;popCommon.status = false"></div>
+                        <div class="sure" @click="useDY"></div>
                     </div>
                 </div>
             </div>
@@ -1112,7 +1112,7 @@
             <div class="animated bounceIn">
                 <img src="img/img13.png" alt="">
                 <span>{{popCommon01.text}}</span>
-                <div class="button_1" @click="popCommon01.status = false"></div>
+                <div class="button_1" @click="button_1"></div>
             </div>
         </div>
     </div>
@@ -1159,6 +1159,12 @@
                 s_id_2:'',//超值购
                 s_id_3:'',//换新购
                 s_id_4:'',//免费购
+            },
+            orderId:{
+                orderId_1:'',//至尊购
+                orderId_2:'',//超值购
+                orderId_3:'',//换新购
+                orderId_4:'',//免费购
             },
             start:[],//活动开始
             end:[],
@@ -1514,7 +1520,7 @@
            // 首页方法：
            btn(index){
                 const that = this;
-              if(index == 0){
+              if(index == 0){ //至尊购
                   axiosGet('/index.php/shop/api/operationOrder',{
                       token:that.token,
                       u_id:that.u_id,
@@ -1527,7 +1533,7 @@
                           that.shop_type = 1;
                       }
                   })
-              }else if(index == 1){
+              }else if(index == 1){ //超值购
                   // this.shop_type = 2;
                   // this.popUp01 = 1;
                   axiosGet('/index.php/shop/api/operationOrder',{
@@ -1538,16 +1544,53 @@
                   },function (res) {
                       console.log(res)
                       if(res.data.status == 0){
-                          console.log(111)
                           that.shop_type = 2;
+                          that.subPage = 3;
                       }else if(res.data.status == 1){
                           that.shop_type = 2;
                           that.popUp01 = 1;
                       }
                   })
-              }else if(index == 2){
-                  this.shop_type = 3
-              }else if(index == 3){
+              }else if(index == 2){ //换新购
+                  // this.shop_type = 3
+                  axiosGet('/index.php/shop/api/operationOrder',{
+                      token:that.token,
+                      u_id:that.u_id,
+                      s_id:that.s_id.s_id_3,
+                      type:'existence'
+                  },function (res) {
+                      console.log(res)
+                      // that.shop_type = 3;
+                      // that.subPage = 3;
+                      if(res.data.status == 0){
+                          axiosGet('/index.php/shop/api/operationOrder',{
+                              token:that.token,
+                              u_id:that.u_id,
+                              s_id:that.s_id.s_id_3,
+                              type:'isUseCoupon'
+                          },function (res) {
+                              console.log(res)
+                              if(res.data.status == 0){
+                                  that.quanUse03 = true;
+                                  that.shop_type = 3;
+                                  that.subPage = 3;
+                              }else if(res.data.status == 1){
+                                  that.quanUse03 = false;
+                                  that.shop_type = 3;
+                                  that.subPage = 3;
+                              }
+                          })
+                      }else if(res.data.status == 1){
+                          that.shop_type = 3;
+                          that.popUp01 = 1;
+                      }else if(res.data.status == 2){
+                          that.shop_type = 3;
+                          that.subPage = 1;
+                          that.popCommon.status = true;
+                          that.popCommon.text = '您有未付款订单，点击确定前往支付！'
+                      }
+                  })
+              }else if(index == 3){ //免费购
                   var self = this;
                   $.get('https://haotaitai.hengdikeji.com/index.php/shop/api/operationOrder',
                       {
@@ -1603,12 +1646,12 @@
                if(this.popUp01 == 4){
                    // this.popUp01 = 0;
                    // this.subPage = 2;
-                   Post('/index.php/shop/api/pays',{
+                   axiosPost('/index.php/shop/api/pays',{
                        token:that.token
                    },function (res) {
                        console.log(res)
-                       this.popUp01 = 0;
-                       this.subPage = 2;
+                       that.popUp01 = 0;
+                       that.subPage = 2;
                    })
                }
             },
@@ -1618,6 +1661,7 @@
             },
             // 超值购信息提交
             submit02(){
+                const that = this;
                 if(this.msg01.name == ''){
                     this.popCommon01.status = 1;
                     this.popCommon01.text = '姓名不能为空';
@@ -1631,9 +1675,23 @@
                     this.popCommon01.status = 1;
                     this.popCommon01.text = '具体地址不能为空';
                 }else{
-                    this.msg01.type = 'purchase'
-                    console.log(this.msg01);
-                    this.popUp01 = 4
+                    var msg00 = this.msg01;
+                    msg00.type = 'purchase';
+                    msg00.token = this.token;
+                    msg00.u_id = this.u_id;
+                    msg00.s_id = this.s_id.s_id_3;
+                    console.log(msg00);
+                    // this.popUp01 = 4
+                    Post('/index.php/shop/api/dataForm',msg00,function (res) {
+                        console.log(res);
+                        if(res.status == 0&&res.msg == "您已存在该商品的订单，请勿重复提交订单"){
+                            that.popCommon.status = true;
+                            that.popCommon.text = '您已有未付款订单，点击确定前往支付！';
+                        }else if(res.status == 1){
+                            that.orderId.orderId_3 = res.orderId;
+                            console.log(that.orderId.orderId_3)
+                        }
+                    })
                 }
             },
             // 至尊购开发票tab切换s
@@ -1736,6 +1794,36 @@
                        }
                    )
                }
+            },
+            // 通用弹窗按钮
+            button_1(){
+                const that = this;
+              if(this.shop_type == 3&&this.subPage == 1){
+                  that.popCommon01.status = 0
+              }
+            },
+            // 换新购
+            // 换新购使用抵用券
+            useDY(){
+                const that = this;
+                // quanUse03 = true;popCommon.status = false
+                if(this.subPage == 3 && this.shop_type == 3){
+                    axiosGet('/index.php/shop/api/operationOrder',{
+                        token:that.token,
+                        u_id:that.u_id,
+                        s_id:that.s_id.s_id_3,
+                        type:'useCoupon'
+                    },function (res) {
+                        console.log(res);
+                        that.quanUse03 = true;
+                        that.popCommon.status = false
+                    })
+                }
+                if(this.shop_type == 3 && this.subPage == 1){
+                    alert(123);
+                    that.popCommon.status = false;
+                    that.subPage = 2
+                }
             }
         },
         updated(){
@@ -1850,8 +1938,7 @@
                     token:that.token
                 },function (res) {
                     that.u_id = res.data.user_id;
-                    that.token = res.data.token
-                    console.log('用户id：',that.u_id);
+                    console.log('用户id：',res);
                 });
                 //获取活动时间
                 axiosGet('/index.php/shop/api/Activitytime',{
