@@ -34,7 +34,7 @@
             </div>
             <div class="list2">
                 <div>
-                    <div class="line01"></div>
+                    <!--<div class="line01"></div>-->
                     <div class="circle01">
                         <div v-for="(item,index) in 14" :key="index" :class="{circle_sel:index<classNum01}"></div>
                     </div>
@@ -412,6 +412,21 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <!--提交已申请-->
+        <div class="list4" v-if="subPage == 9">
+            <img src="img/img16.png" alt="" style="top: -1%;">
+            <div class="return" @click="shop_type=0">
+                <img src="img/return.png" alt="">
+            </div>
+            <div class="logo">
+                <img src="img/logo01.png" alt="">
+            </div>
+            <div class="buttons" style="width: 44%;" >
+                <div class="button">
+                    <img src="img/button20.png" alt=""  @click="shop_type=0">
                 </div>
             </div>
         </div>
@@ -1213,7 +1228,7 @@
             end:[],
             //状态控制
             status:1, //页面状态：0-加载页面、1-首页
-            shop_type:1,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
+            shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
             subPage:0,//内页流程步骤控制：
             aa:true,
             //加载页参数：
@@ -1414,6 +1429,11 @@
             shop_type:function (newData,oldData) {
                 if(newData == 0){
                     this.subPage = 0
+                }
+            },
+            status:function (n, o) {
+                if(n == 1){
+                    this.remind = true;
                 }
             }
         },
@@ -2062,9 +2082,9 @@
             $('.img').click(function () {
                 return false
             });
-                var swiper1 = new Swiper('.swiper01',{
+                var swiper1 = new Swiper('.swiper-container',{
                     pagination:{
-                        el:'.pagin01',
+                        el:'.swiper-pagination',
                         type:'bullets',
                     },
                     navigation: {
@@ -2177,7 +2197,6 @@
                     console.log(res)
                     that.start = res.data.begin.split('-');
                     that.end = res.data.end.split('-');
-                    that.remind = true;
                 });
                 //获取商品id
                 axiosGet('/index.php/shop/api/getShop',{
