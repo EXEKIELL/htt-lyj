@@ -155,11 +155,11 @@
         </div>
         <!--抢购成功-->
         <div class="popUp01" v-if="popUp01 == 2">
-            <img src="img/success01.png" alt="">
+            <img src="img/success01.png" alt="" class="img animated bounceIn" @click="popUp01 = 0">
         </div>
         <!--抢购失败-->
         <div class="popUp01" v-if="popUp01 == 3">
-            <img src="img/lose01.png" alt="">
+            <img src="img/lose01.png" alt="" class="img animated bounceIn" @click="popUp01 = 0">
         </div>
         <!--申请退款-->
         <div class="popUp01 popUp03" v-if="popUp01 == 4">
@@ -1254,7 +1254,7 @@
             // 活动提醒
             reminded:false,
             //超值购弹窗
-            popUp01:1,//0:不显示任何弹窗
+            popUp01:0,//0:不显示任何弹窗
             // 超值购购买协议同意状态
             agrees:false,
             // 超值购券使用状态
@@ -1646,18 +1646,28 @@
                       token:that.token,
                       u_id:that.u_id,
                       s_id:that.s_id.s_id_1,
-                      type:'existence'
+                      type:'robShoping'
                   },function (res) {
                       console.log(res)
                       if(res.data.status == 0){
-                          console.log(111)
-                      }else if(res.data.status == 1){
                           that.shop_type = 1;
-                      }else if(res.data.status == 2){
+                          that.popUp01 = 6;
+                      }else if(res.data.status == 1){
                           that.shop_type = 1;
                           that.subPage = 1;
                           that.popCommon01.status = 2;
                           that.popCommon01.text = '您有未付款订单，点击确定前往支付！'
+                      }else if(res.data.status == 2){
+                          that.shop_type = 1;
+                          that.subPage = 9;
+                      }else if(res.data.status == 3){
+                          that.shop_type = 1;
+                          that.subPage = 3;
+                          that.popUp01 = 2;
+                      }else if(res.data.status == 5){
+                          that.shop_type = 1;
+                          that.subPage = 4;
+                          that.popUp01 = 3;
                       }
                   })
               }else if(index == 1){ //超值购
@@ -1878,6 +1888,9 @@
                        }else if(res.status == 1){
                            that.orderId.orderId_1 = res.orderId;
                            console.log(that.orderId.orderId_1)
+                           alert(1);
+                           that.subPage = 2;
+                           that.popUp01 = 0;
                        }
                    })
                }
@@ -1897,7 +1910,7 @@
                            that.popCommon.text = '您已有未付款订单，点击确定前往支付！';
                        }else if(res.status == 1){
                            that.orderId.orderId_2 = res.orderId;
-                           console.log(that.orderId.orderId_2)
+                           console.log(that.orderId.orderId_2);
                        }
                    })
                }
