@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/public.css">
     <link rel="stylesheet" href="css/index.css?v=1">
-    <link rel="stylesheet" href="css/bemzj_css.css">
+    <link rel="stylesheet" href="css/bemzj_css.css?v=2">
     <script src="js/rem.js"></script>
     <script src="js/tools.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
@@ -264,7 +264,7 @@
                     <img src="img/button16.png" alt="" class="img" v-if="statusNum.Num_1 == 4" @click="toInvoice">
                 </div>
                 <div class="button">
-                    <img src="img/button17.png" alt="" class="img" v-if="statusNum.Num_1 == 3" @click="popCommon.status = true;popCommon.text = '您还没补交体验款，无法开发票'">
+                    <img src="img/button17.png" alt="" class="img" v-if="statusNum.Num_1 == 3" @click="popCommon.status = true;popCommon.text = '您还没补交体验款，暂无凭证码'">
                     <img src="img/button17.png" alt="" class="img" v-if="statusNum.Num_1 == 4" @click="toCode">
 
                 </div>
@@ -300,14 +300,14 @@
                     <div class="mesList mesList01">
                         <img src="img/img09.png" alt="">
                         <div class="num">
-                            <span>3</span><span>6</span><span>9</span><span>8</span><span>7</span><span>7</span>
+                            <span v-for="(item,index) in code_1" :key="index">{{item}}</span>
                         </div>
                     </div>
                     <div class="button07" v-if="use">
-                        <img src="img/button13.png" alt="" class="img">
+                        <img src="img/button13.png" alt="" class="img" @click="shop_type = 0">
                     </div>
                     <div class="button07" v-else>
-                        <img src="img/button18.png" alt="" class="img">
+                        <img src="img/button18.png" alt="" class="img" @click="toCommon">
                     </div>
                 </div>
             </div>
@@ -333,7 +333,7 @@
                     </div>
                 </div>
             </div>
-            <div class="return"><img src="img/return.png" alt="" class="img"></div>
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="shop_type = 0"></div>
             <div class="logo01">
                 <img src="img/logo01.png" alt="">
             </div>
@@ -401,20 +401,21 @@
                     <div class="serveCmm">
                         <div v-for="(items,index) in 5" :class="{hasStar:index<=freeComment.serve}" @click="fserCmm(index)"></div>
                     </div>
-                    <textarea placeholder="您还可以输入200个字"></textarea>
+                    <textarea placeholder="您还可以输入200个字" v-model="freeComment.txt"></textarea>
                     <div class="fImgUp">
                         <div v-for="(item,index) in freeComment.fcImg">
                             <div class="fdelImg" v-if="item.img!=''" @click="fcdelImg(index)">
                                 <img src="img/freeClose.png"/>
                             </div>
                             <div class="freeInput" v-if="item.img==''">
-                                <input   :id="'fileCom'+index" type="file" accept="image/*" capture="camera"/>
+                                <input   :id="'fileComm'+index" type="file" accept="image/*" capture="camera"/>
                             </div>
                             <div class="fImgBox" v-if="item.img!=''"  >
                                 <img :src="item.img" @click="showBImg(item.img)"/>
                             </div>
                         </div>
                     </div>
+                    <button @click="freecSubmit"></button>
                 </div>
             </div>
         </div>

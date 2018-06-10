@@ -67,6 +67,8 @@ var App = new Vue({
         reason:'',
         // 至尊购凭证码按钮
         use:true,
+        // 至尊购凭证码
+        code_1:'',
         // 至尊购填写表单信息
         msg01:{
             name:'',
@@ -256,14 +258,34 @@ var App = new Vue({
         // 至尊购去凭证码
         toCode(){
             const that = this;
+            // this.subPage = 5;
             axiosGet('/index.php/shop/api/operationOrder',{
-                o_id:that.orderId.orderId_1,
                 s_id:that.s_id.s_id_1,
-                type:'robShoping',
-                token:that.token
+                o_id:that.orderId.orderId_1,
+                token:that.token,
+                type:'isUseCoupon'
             },function (res) {
-                console.log(res)
+                console.log(res);
+                if(res.data.status == 1){
+                    that.subPage = 5;
+                }else if(res.data.status == 0){
+                    that.use = false;
+                    that.subPage = 5;
+                }
             })
+        },
+        // 至尊购去评价
+        toCommon(){
+            const self = this;
+            self.subPage = 8;
+            self.resetComment();
+            setTimeout(function(){
+                for(var i=0; i<self.freeComment.fcImg.length; i++)
+                {
+                    upImg('fileComm'+i,i,self.freeComment.fcImg)
+
+                }
+            },500);
         },
         // 至尊购补交体验款
         payMoney(){
@@ -271,7 +293,19 @@ var App = new Vue({
         },
         // 至尊购去开发票
         toInvoice(){
-
+            const that = this;
+            axiosGet('/index.php/shop/api/operationOrder',{
+                o_id:that.orderId.orderId_1,
+                s_id:that.s_id.s_id_1,
+                token:that.token,
+                type:'refundMoney'
+            },function (res) {
+                console.log(res)
+                if(res.data.status == 1){
+                    that.fpmessage01.money = res.data.refundMoney+'元';
+                    that.subPage = 7
+                }
+            })
         },
         //免费购---------------------------------------------------------------------------------
         //关闭规则页面（免费购）
@@ -337,7 +371,18 @@ var App = new Vue({
                 this.popCommon01.status = 1;
                 this.popCommon01.text = '您还没有付款,不能进行该操作！';
             }else if(self.freeStatus==4){
-                self.freeIndex = 7;
+                axiosGet('/index.php/shop/api/operationOrder',{
+                    o_id:self.orderId.orderId_4,
+                    s_id:self.s_id.s_id_4,
+                    token:self.token,
+                    type:'refundMoney'
+                },function (res) {
+                    console.log(res)
+                    if(res.data.status == 1){
+                        self.fpmessage01.money = res.data.refundMoney+'元';
+                        self.freeIndex = 7;
+                    }
+                })
             }
         },
         //开发票判断
@@ -416,6 +461,7 @@ var App = new Vue({
                 this.popCommon01.status = 1;
                 this.popCommon01.text = '内容不能为空！';
             }else{
+
                 var updata = {
                     key:'Free',
                     o_id:2147483647,
@@ -424,6 +470,11 @@ var App = new Vue({
                     photo:photos,
                     type : 'Evaluate',
                     token:self.token
+                }
+                if(this.shop_type = 1){
+                    updata.o_id = this.orderId.orderId_1;
+                }else if(this.shop_type = 4){
+                    updata.o_id = this.orderId.orderId_4;
                 }
                 Post(
                     '/index.php/shop/api/dataForm',
@@ -555,6 +606,8 @@ var App = new Vue({
                     }else if(res.data.status == 4){
                         that.shop_type = 1;
                         that.subPage = 3;
+                        that.code_1 = res.data.code.toString();
+
                     }
                 })
             }else if(index == 1){ //超值购
@@ -670,6 +723,9 @@ var App = new Vue({
                     type:'robShoping'
                 },function (res) {
                     console.log(res);
+                    if(res.data.orderId){
+                        that.orderId.orderId_4 = res.data.orderId;
+                    }
                     if(res.data.status == 0)
                     {
                         self.shop_type = 4
@@ -840,9 +896,11 @@ var App = new Vue({
             }else{
                 console.log(this.fpmessage01);
                 const that = this;
+                this.fpmessage01.o_id = this.orderId.orderId_1;
+                this.fpmessage01.u_id = this.u_id;
                 this.fpmessage01.types = this.types;
                 this.fpmessage01.token = this.token;
-                console.log(this.fpmessage01.types)
+                this.fpmessage01.money = parseInt(this.fpmessage01.money);
                 $.post(
                     'https://haotaitai.hengdikeji.com/index.php/shop/api/dataForm',
                     that.fpmessage01,
@@ -924,14 +982,14 @@ var App = new Vue({
                 that.popCommon01.status = 0;
                 that.popUp01 = 4;
                 // console.log(that.orderId)
-                // Post('/index.php/shop/api/operationOrder',{
-                //     o_id:that.orderId.orderId_1,
-                //     s_id:that.s_id.s_id_1,
-                //     type:'refundMoney',
-                //     token:that.token,
-                // },function (res) {
-                //     console.log(res)
-                // })
+                axiosGet('/index.php/shop/api/operationOrder',{
+                    o_id:that.orderId.orderId_1,
+                    s_id:that.s_id.s_id_1,
+                    type:'refundMoney',
+                    token:that.token,
+                },function (res) {
+                    console.log(res)
+                })
             }
             if(this.shop_type == 1 && this.subPage == 3){
                 that.popCommon01.status = 0;
@@ -990,7 +1048,7 @@ var App = new Vue({
             return false
         });
 
-        //超值购选择省市区
+         //超值购选择省市区
         !function () {
             var $target = $('#acity');
 
