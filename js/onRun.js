@@ -18,7 +18,7 @@ var App = new Vue({
         start:[],//活动开始
         end:[],
         //状态控制
-        status:1, //页面状态：0-加载页面、1-首页
+        status:0, //页面状态：0-加载页面、1-首页
         shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
         subPage:0,//内页流程步骤控制：
         aa:true,
@@ -471,9 +471,9 @@ var App = new Vue({
                     type : 'Evaluate',
                     token:self.token
                 }
-                if(this.shop_type = 1){
+                if(this.shop_type == 1){
                     updata.o_id = this.orderId.orderId_1;
-                }else if(this.shop_type = 4){
+                }else if(this.shop_type == 4){
                     updata.o_id = this.orderId.orderId_4;
                 }
                 Post(
@@ -618,12 +618,15 @@ var App = new Vue({
                     type:'existence'
                 },function (res) {
                     console.log(res);
+                    if(res.data.orderId){
+                        that.orderId.orderId_2 = res.data.orderId;
+                    }
                     // that.shop_type = 3;
                     // that.subPage = 3;
                     if(res.data.status == 0){
                         axiosGet('/index.php/shop/api/operationOrder',{
                             token:that.token,
-                            u_id:that.u_id,
+                            o_id:that.orderId.orderId_2,
                             s_id:that.s_id.s_id_2,
                             type:'isUseCoupon'
                         },function (res) {
@@ -650,7 +653,6 @@ var App = new Vue({
                                 prevButton:'.swiper-button-prev',
                                 nextButton:'.swiper-button-next',
                                 onSlideChangeStart: function(swiper){
-                                    console.log(swiper.activeIndex)
                                     that.index01 = swiper.activeIndex
                                 }
                             });
@@ -673,10 +675,13 @@ var App = new Vue({
                     console.log(res)
                     // that.shop_type = 3;
                     // that.subPage = 3;
+                    if(res.data.orderId){
+                        that.orderId.orderId_3 = res.data.orderId;
+                    }
                     if(res.data.status == 0){
                         axiosGet('/index.php/shop/api/operationOrder',{
                             token:that.token,
-                            u_id:that.u_id,
+                            o_id:that.orderId.orderId_3,
                             s_id:that.s_id.s_id_3,
                             type:'isUseCoupon'
                         },function (res) {
@@ -896,8 +901,12 @@ var App = new Vue({
             }else{
                 console.log(this.fpmessage01);
                 const that = this;
-                this.fpmessage01.o_id = this.orderId.orderId_1;
-                this.fpmessage01.u_id = this.u_id;
+                if(this.shop_type == 1){
+                    this.fpmessage01.o_id = this.orderId.orderId_1;
+                }else if(this.shop_type == 4){
+                    this.fpmessage01.o_id = this.orderId.orderId_4;
+                }
+
                 this.fpmessage01.types = this.types;
                 this.fpmessage01.token = this.token;
                 this.fpmessage01.money = parseInt(this.fpmessage01.money);
@@ -1005,7 +1014,7 @@ var App = new Vue({
             if(this.subPage == 3 && this.shop_type == 3){
                 axiosGet('/index.php/shop/api/operationOrder',{
                     token:that.token,
-                    u_id:that.u_id,
+                    o_id:that.orderId.orderId_3,
                     s_id:that.s_id.s_id_3,
                     type:'useCoupon'
                 },function (res) {
@@ -1018,7 +1027,7 @@ var App = new Vue({
             if(this.subPage == 3 && this.shop_type == 2){
                 axiosGet('/index.php/shop/api/operationOrder',{
                     token:that.token,
-                    u_id:that.u_id,
+                    o_id:that.orderId.orderId_2,
                     s_id:that.s_id.s_id_2,
                     type:'useCoupon'
                 },function (res) {

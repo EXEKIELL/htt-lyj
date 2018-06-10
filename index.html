@@ -287,7 +287,7 @@
         </div>
         <!--安装凭证码-->
         <div class="i-2" v-if="subPage == 5">
-            <div class="return"><img src="img/return.png" alt="" class="img"></div>
+            <div class="return"><img src="img/return.png" alt="" class="img" @click="shop_type = 0"></div>
             <div class="logo01" style="top: -5%;">
                 <img src="img/logo01.png" alt="">
             </div>
@@ -318,7 +318,7 @@
                 <img src="img/img10.png" alt="">
             </div>
             <a class="button11">
-                <img src="img/button19.png" alt="">
+                <img src="img/button19.png" alt="" class="img" @click="subPage = 5">
             </a>
         </div>
         <!--开发票-->
@@ -389,7 +389,7 @@
         </div>
         <!--评价-->
         <div class="compented" v-if="subPage == 8">
-            <div class="return" ><img  src="img/return.png" alt="" class="img" @click="freeIndex = 8"></div>
+            <div class="return" ><img  src="img/return.png" alt="" class="img" @click="shop_type = 0"></div>
             <div class="fLogo"><img src="img/logo01.png"/> </div>
             <div class="compentedIn">
                 <img src="img/compent1.png"/>
