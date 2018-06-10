@@ -854,7 +854,7 @@
                             </div>
                         </div>
                         <div class="button08" style="width: 65%;" v-if="freeAgree">
-                            <img src="img/button10.png" alt="" class="img" @click="btn01">
+                            <img src="img/button10.png" alt="" class="img" @click="setFreePay">
                         </div>
                     </div>
                     <div class="wrap-3">
@@ -951,17 +951,17 @@
                 <img src="img/logo01.png" alt="">
             </div>
             <div class="button14">
-                <img src="img/free09.png" alt="">
+                <img src="img/free09.png" alt="" @click="setFreeMoney">
             </div>
             <div class="buttons">
                 <div class="button">
                     <img src="img/free08.png" alt=""  @click="newProC">
                 </div>
                 <div class="button">
-                    <img src="img/button16.png" alt=""  @click="freeIndex=7">
+                    <img src="img/button16.png" alt=""  @click="setFreeFapiao">
                 </div>
                 <div class="button">
-                    <img src="img/button17.png" alt=""  @click="freeIndex=8">
+                    <img src="img/button17.png" alt=""  @click="setFreeComment">
                 </div>
             </div>
         </div>
@@ -1063,7 +1063,7 @@
                     <div class="mesList mesList01">
                         <img src="img/free14.png" alt="">
                         <div class="num">
-                            <span>3</span><span>6</span><span>9</span><span>8</span><span>7</span><span>7</span>
+                            <span v-for="(item,index) in freeCodeList" >{{item}}</span>
                         </div>
                     </div>
                     <div class="button07" >
@@ -1213,7 +1213,7 @@
             end:[],
             //状态控制
             status:1, //页面状态：0-加载页面、1-首页
-            shop_type:1,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
+            shop_type:0,//购物类型状态: 0-首页、1-至尊购、2-超值购、3-换新购、4-免费购、5-活动规则
             subPage:0,//内页流程步骤控制：
             aa:true,
             //加载页参数：
@@ -1373,7 +1373,7 @@
             ],
             //首页规则---------------------------------------------------------------------------------
             //免费购---------------------------------------------------------------------------------
-            freePopStatus:1,//0规则弹窗
+            freePopStatus:-1,//0规则弹窗
             //免费页面显示 0--首页 1--填写地址 2--提交成功 3--已申请页面 4--抢购成功 5--抢购失败
             //7--开发票 8--安装凭证码 9--评价 10--提交成功
             freeIndex:0,
@@ -1388,7 +1388,7 @@
             },
             freeUse:false,
             //同意协议
-            freeAgree:true,
+            freeAgree:false,
             freeSubmitArr:{
                 key:'Free',
                 u_id:'',
@@ -1405,8 +1405,9 @@
                 type:'purchase',
                 token:''
             },
+            //状态
+            freeStatus:-1,
             //安装凭证码（免费购）
-            freeCode:'',
             freeCodeList:[]
             //免费购---------------------------------------------------------------------------------
         },
@@ -1457,15 +1458,61 @@
             //新机评价
             newProC(){
                 var self = this;
-                self.freeIndex = 9;
-                resetComment();
-                setTimeout(function(){
-                    for(var i=0; i<self.freeComment.fcImg.length; i++)
-                    {
-                        upImg('fileCom'+i,i,self.freeComment.fcImg)
+                if(self.freeStatus==3)
+                {
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '您还没有付款,不能进行该操作！';
+                }else if(self.freeStatus==4){
+                    self.freeIndex = 9;
+                    self.resetComment();
+                    setTimeout(function(){
+                        for(var i=0; i<self.freeComment.fcImg.length; i++)
+                        {
+                            upImg('fileCom'+i,i,self.freeComment.fcImg)
 
-                    }
-                },500);
+                        }
+                    },500);
+                }
+
+            },
+            //开发票判断
+            setFreeFapiao(){
+                var self = this;
+                if(self.freeStatus==3)
+                {
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '您还没有付款,不能进行该操作！';
+                }else if(self.freeStatus==4){
+                    self.freeIndex = 7;
+                }
+            },
+            //开发票判断
+            setFreeComment(){
+                var self = this;
+                if(self.freeStatus==3)
+                {
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '您还没有付款,不能进行该操作！';
+                }else if(self.freeStatus==4){
+                    self.freeIndex = 8;
+                }
+            },
+            //缴纳安装费
+            setFreeMoney(){
+                var self = this;
+                if(self.freeStatus==4)
+                {
+                    this.popCommon01.status = 1;
+                    this.popCommon01.text = '您已经付款，感谢您的支持';
+                }else if(self.freeStatus==3){
+                    self.freePopStatus = 1;
+                }
+            },
+            //免费购-付款
+            setFreePay(){
+                var self = this
+                this.popCommon01.status = 1;
+                this.popCommon01.text = '购买失败！';
             },
             //产片评价
             fproCmm(index){
@@ -1584,7 +1631,7 @@
                 }else if(this.freeSubmitArr.problem == ''){
                     this.popCommon01.status = 1;
                     this.popCommon01.text = '问题不能为空';
-                }else if(this.freeSubmitArr.photo == ''){
+                }else if(this.freeSubmitArr.photo.length <= 2){
                     this.popCommon01.status = 1;
                     this.popCommon01.text = '旧产品图片不能为空';
                 }else{
@@ -1733,66 +1780,31 @@
                       token:that.token,
                       u_id:that.u_id,
                       s_id:that.s_id.s_id_4,
-                      type:'existence'
+                      type:'robShoping'
                   },function (res) {
-                      if(res.data.status == 1)
+                      console.log(res);
+                      if(res.data.status == 0)
                       {
                           self.shop_type = 4
                           self.freePopStatus = 0;
                           self.freeIndex = 0;
-                      }else if(res.data.status==2) {
-                          axiosGet('/index.php/shop/api/operationOrder', {
-                              token: that.token,
-                              u_id: that.u_id,
-                              s_id: that.s_id.s_id_4,
-                              type: 'robShoping'
-                          }, function (res) {
-                              console.log(res)
-                              // if(res.data.status == 0){
-                              //     that.quanUse03 = true;
-                              //     that.shop_type = 3;
-                              //     that.subPage = 3;
-                              // }else if(res.data.status == 1){
-                              //     that.quanUse03 = false;
-                              //     that.shop_type = 3;
-                              //     that.subPage = 3;
-                              // }
-                          })
-                      }else if(res.data.status == 0)
-                      {
+                      }else if(res.data.status == 2){
+                          self.shop_type = 4
+                          self.freeIndex = 3;
+                      }else if(res.data.status == 3){
                           self.shop_type = 4
                           self.freeIndex = 4;
+                          self.freeStatus = res.data.status;
+                      }else if(res.data.status == 4){
+                          self.shop_type = 4
+                          self.freeIndex = 4;
+                          self.freeStatus = res.data.status;
+                          self.freeCodeList = res.data.code.toString().split("");
+                      }else{
+                          self.shop_type = 4
+                          self.freeIndex = 5;
                       }
-                      // console.log(res)
-                      // // that.shop_type = 3;
-                      // // that.subPage = 3;
-                      // if(res.data.status == 0){
-                      //     axiosGet('/index.php/shop/api/operationOrder',{
-                      //         token:that.token,
-                      //         u_id:that.u_id,
-                      //         s_id:that.s_id.s_id_4,
-                      //         type:'isUseCoupon'
-                      //     },function (res) {
-                      //         console.log(res)
-                      //         if(res.data.status == 0){
-                      //             that.quanUse03 = true;
-                      //             that.shop_type = 3;
-                      //             that.subPage = 3;
-                      //         }else if(res.data.status == 1){
-                      //             that.quanUse03 = false;
-                      //             that.shop_type = 3;
-                      //             that.subPage = 3;
-                      //         }
-                      //     })
-                      // }else if(res.data.status == 1){
-                      //     that.shop_type = 2;
-                      //     that.popUp01 = 1;
-                      // }else if(res.data.status == 2){
-                      //     that.shop_type = 2;
-                      //     that.subPage = 1;
-                      //     that.popCommon.status = true;
-                      //     that.popCommon.text = '您有未付款订单，点击确定前往支付！'
-                      // }
+
                   })
 
               }else{
