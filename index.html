@@ -166,7 +166,8 @@
             <div>
                 <div class="animated bounceInDown">
                     <img src="img/img12.png" alt="">
-                    <div class="text">{{moneyData}}</div>
+                    <div class="text" v-if="moneyData == 99">预定金：{{moneyData}}元</div>
+                    <div class="text" v-else>{{moneyData}}元</div>
                     <div class="textarea">
                         <textarea placeholder="请填写您的退款原因" v-model="reason"></textarea>
                     </div>

@@ -245,8 +245,28 @@ var App = new Vue({
         // 至尊购申请退款
         refund(){
             const that = this;
-            this.popCommon01.status = 2;
-            this.popCommon01.text = '申请退款后将无法参与该活动！';
+            // this.popCommon01.status = 2;
+            // this.popCommon01.text = '申请退款后将无法参与该活动！';
+            axiosGet('/index.php/shop/api/operationOrder',{
+                o_id:that.orderId.orderId_1,
+                s_id:that.s_id.s_id_1,
+                type:'refundMoney',
+                token:that.token,
+            },function (res) {
+                console.log(res)
+                if(res.data.status == 0){
+                    that.popCommon01.status = 1;
+                    that.popCommon01.text = res.data.msg;
+                }else if(res.data.status == 1){
+                    that.moneyData = res.data.refundMoney;
+                    that.popCommon01.status = 2;
+                    that.popCommon01.text = '申请退款后将无法参与该活动！';
+                }
+            });
+            // if(this.statusNum.Num_1 == 4){
+            //     this.popCommon01.status = 1;
+            //     this.popCommon01.text = '申请退款后将无法参与该活动！';
+            // }
             // this.popUp01 = 4;
             // Post('/index.php/shop/api/dataForm',{
             //     o_id:o_id.orderId_1,
@@ -289,7 +309,9 @@ var App = new Vue({
         },
         // 至尊购补交体验款
         payMoney(){
-          alert(123)
+            const that = this;
+          alert('支付');
+          that.shop_type = 0;
         },
         // 至尊购去开发票
         toInvoice(){
@@ -608,6 +630,12 @@ var App = new Vue({
                         that.subPage = 3;
                         that.code_1 = res.data.code.toString();
 
+                    }else if(res.data.status == 6){
+                        that.popCommon01.status = 2;
+                        that.popCommon01.text = res.data.msg;
+                    }else if(res.data.status == 7){
+                        that.popCommon01.status = 2;
+                        that.popCommon01.text = res.data.msg;
                     }
                 })
             }else if(index == 1){ //超值购
@@ -934,17 +962,25 @@ var App = new Vue({
         },
         // 退款按钮
         tkbtns(item){
+            const that = this;
             if(item == 'sure'){
                 if(this.reason == ''){
                     this.popCommon.status = true;
                     this.popCommon.text = '请填写您的退款原因'
                 }else{
                     console.log(this.reason);
-                    alert('申请退款');
-                    this.popUp01 = 0;
-                    this.shop_type = 0;
-                    this.popCommon01.status = 2;
-                    this.popCommon01.text = '退款申请已提交，请耐心等待！'
+                    Post('/index.php/shop/api/dataForm',{
+                        token:that.token,
+                        o_id:that.orderId.orderId_1,
+                        refund_reason:that.reason,
+                        type:'refund'
+                    },function (res) {
+                        console.log(res);
+                        that.popUp01 = 0;
+                        that.shop_type = 0;
+                        that.popCommon01.status = 2;
+                        that.popCommon01.text = '退款申请已提交，请耐心等待！'
+                    });
                 }
             }else{
                 this.popUp01 = 0;
@@ -977,7 +1013,7 @@ var App = new Vue({
         button_1(){
             const that = this;
             if(this.shop_type == 0){
-                this.popCommon01 = 0;
+                this.popCommon01.status = 0;
             }
             if(this.shop_type == 1&&this.subPage == 1){
                 alert(1)
@@ -1003,6 +1039,14 @@ var App = new Vue({
             if(this.shop_type == 1 && this.subPage == 3){
                 that.popCommon01.status = 0;
                 that.popUp01 = 4;
+                axiosGet('/index.php/shop/api/operationOrder',{
+                    o_id:that.orderId.orderId_1,
+                    s_id:that.s_id.s_id_1,
+                    type:'refundMoney',
+                    token:that.token,
+                },function (res) {
+                    console.log(res)
+                })
             }
         },
         // 换新购
